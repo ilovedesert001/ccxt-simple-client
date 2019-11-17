@@ -1,0 +1,26 @@
+@import "../../styles/var";
+
+.UpdatableCard {
+
+  .ant-card-head-title {
+
+    .titleWithUpdateTime {
+      line-height: 1;
+      display: flex;
+      align-items: center;
+
+      > .updateTime {
+        margin-left: 8px;
+        font-size: 10px;
+        color: $tip-info-color;
+      }
+    }
+  }
+
+  &.noContentPadding {
+    .ant-card-body {
+      padding: 0;
+    }
+  }
+
+}

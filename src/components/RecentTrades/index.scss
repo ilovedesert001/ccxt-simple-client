@@ -1,0 +1,47 @@
+@import "../../styles/var";
+
+.RecentTrades {
+
+
+  .TradeHistoryContainer {
+    .TradeHistoryContainer_item {
+      display: flex;
+      @include animationAllFast;
+
+      &:hover, &:active {
+        background-color: #cfe0d4;
+      }
+
+      > .icon {
+        flex: 0 0 20px;
+        text-align: center;
+
+        &.plusTick, &.ZeroPlusTick {
+          color: $main-buy-color;
+        }
+
+        &.minusTick, &.ZeroMinusTick {
+          color: $main-sell-color;
+        }
+
+      }
+
+      > .price {
+        flex: 1;
+      }
+
+      > .volume {
+        flex: 1;
+      }
+
+      > .time {
+        flex: 1;
+      }
+
+      > .side {
+        margin-right: 8px;
+      }
+
+    }
+  }
+}

@@ -1,0 +1,26 @@
+
+.UserAsset {
+
+  .orderCol {
+    display: flex;
+    flex-direction: column;
+
+    .orderColItem {
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+
+      .btn {
+        margin-right: 8px;
+      }
+
+      .quote {
+        flex: 0 0 50px;
+      }
+
+    }
+
+  }
+
+}
+

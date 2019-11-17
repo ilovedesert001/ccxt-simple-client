@@ -1,0 +1,34 @@
+@import "../../styles/var";
+
+.BalanceCard {
+  .BalanceItem {
+    padding: 14px;
+
+    .BalanceItemRow {
+      margin-top: 4px;
+
+      .BalanceItemRowDown {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .BalanceItemRowText {
+          text-align: right;
+        }
+      }
+    }
+  }
+
+  .ProfitSection {
+    padding: 14px;
+
+    .profitRow2 {
+      margin-top: 8px;
+
+      > div {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+  }
+}
