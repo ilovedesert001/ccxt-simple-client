@@ -4,4 +4,4 @@
 
 ### docs
 
-See the [start](./docs/start.md) for more information.
+See the [start](./readme/start.md) for more information.
