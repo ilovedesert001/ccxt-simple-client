@@ -1,5 +1,5 @@
 import React from "react";
-import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
+import {HashRouter as Router, Redirect, Route, Switch} from "react-router-dom";
 import "./index.scss";
 import {Home} from "./Home";
 import {ExchangePage} from "./Exchange";

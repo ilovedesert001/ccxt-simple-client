@@ -56,5 +56,6 @@
     "@types/lodash": "4.14.146",
     "@types/react-custom-scrollbars": "4.0.6",
     "@types/react-router-dom": "5.1.2"
-  }
+  },
+  "homepage": "."
 }
