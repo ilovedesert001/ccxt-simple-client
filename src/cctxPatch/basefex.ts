@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { ExchangeOriginalClass } from "./util";
 
 interface BaseFexMarket {
   pricePrecision: number;
@@ -19,16 +20,18 @@ interface BaseFexMarket {
 
 export function init() {
   const ccxt = window.ccxt;
-
   const name = "basefex";
-
   const Original: typeof ccxt.Exchange = ccxt[name];
-
-  class Enhanced extends Original {
+  class Enhanced extends ExchangeOriginalClass {
     enhanced = true;
-
+    constructor(...args) {
+      super();
+      this["__proto__"] = new Original(...args);
+    }
     describe() {
       const d = super.describe();
+      console.log("aaa", this);
+      debugger;
       d.api.public.get.push("instruments");
       return d;
     }
@@ -84,7 +87,9 @@ export function init() {
     async fetchTickers() {
       let instruments: ccxt.Ticker[] = await this.publicGetInstruments();
       instruments = instruments.map((instrument: any) => {
-        const symbol = Enhanced.baseFexSymbolToCcxtSymbol.get(instrument.symbol);
+        const symbol = Enhanced.baseFexSymbolToCcxtSymbol.get(
+          instrument.symbol
+        );
         const timestamp = new Date().getTime(); //this.safeInteger (candlestick, 'time');
         return {
           symbol,
@@ -113,17 +118,21 @@ export function init() {
       return _.keyBy(instruments, "symbol");
     }
 
-    async fetchOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {
+    async fetchOrders(
+      symbol = undefined,
+      since = undefined,
+      limit = undefined,
+      params = {}
+    ) {
       const query = {
-        'symbol': this.translateBaseFEXSymbol (symbol),
-        'limit': limit,
+        symbol: this.translateBaseFEXSymbol(symbol),
+        limit: limit
       };
-      let orders = await this.privateGetOrders ({
-        'query': this.extend (query, this.safeValue (params, 'query', {})),
+      let orders = await this.privateGetOrders({
+        query: this.extend(query, this.safeValue(params, "query", {}))
       });
-      return this.fnMap (orders, 'cast_order', symbol);
+      return this.fnMap(orders, "cast_order", symbol);
     }
-
   }
 
   ccxt[name] = Enhanced;
