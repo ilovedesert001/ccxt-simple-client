@@ -1,8 +1,7 @@
-import {AppSubStore} from "./AppSubStore";
-import {AppRootStore} from "./AppRootStore";
-import {observable} from "mobx";
-import * as  BrowserStore from 'store';
-
+import { AppSubStore } from "./AppSubStore";
+import { AppRootStore } from "./AppRootStore";
+import { observable } from "mobx";
+import * as BrowserStore from "store";
 
 export class Config extends AppSubStore<AppRootStore> {
   @observable version = 1;
@@ -13,7 +12,6 @@ export class Config extends AppSubStore<AppRootStore> {
     super(root, parent);
     this.ls = BrowserStore;
   }
-
 }
 
 export type LocalStorageType = {

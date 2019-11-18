@@ -1,12 +1,12 @@
-import {action, computed, observable} from "mobx";
-import {BaseResModel} from "./Base";
-import {eOrderStatus, eOrderType, IOrderRes} from "../../model/models";
+import { action, computed, observable } from "mobx";
+import { BaseResModel } from "./Base";
+import { OrderModel } from "../../model/models";
 import _ from "lodash";
-import {Account} from "./Account";
-import {Market} from "./Market";
+import { Account } from "./Account";
+import { Market } from "./Market";
 
 export class AccountOrder extends BaseResModel<Account> {
-  map = observable.map<string, IOrderRes>({}, {name: "orderMap"});
+  map = observable.map<string, OrderModel>({}, { name: "orderMap" });
 
   @observable market: Market = null;
 
@@ -28,7 +28,7 @@ export class AccountOrder extends BaseResModel<Account> {
 
   @computed
   get activeOrders() {
-    return this.all.filter(o => o.status === eOrderStatus.open);
+    return this.all.filter(o => o.status === "open");
   }
 
   @action
@@ -37,30 +37,10 @@ export class AccountOrder extends BaseResModel<Account> {
 
     const market = this.market;
     const symbol = market.spec.symbol;
-
-    await Promise.all([
-      this.ccxtIns.fetchOrders(symbol, null, 100, {
-        state: "PENDING"
-      }),
-      this.ccxtIns.fetchOrders(symbol, null, 100, {
-        state: "CLOSED"
-      })
-    ]).then(([data1, data2]) => {
-      let orders: IOrderRes[] = [...data1, ...data2];
-
-      //TODO 只适用于 bigone3
-      orders.forEach(o => {
-        if (o.price) {
-          o.type = eOrderType.limit;
-        } else {
-          o.type = eOrderType.market;
-        }
-      });
-
-      orders = _.orderBy(orders, "timestamp", ["desc"]);
-      const ordersObj = _.keyBy(orders, "id");
-      this.map.merge(ordersObj);
-      this.loadingEnd();
-    });
+    let orders: OrderModel[] = await this.ccxtIns.fetchOrders(symbol);
+    orders = _.orderBy(orders, "timestamp", ["desc"]);
+    const ordersObj = _.keyBy(orders, "id");
+    this.map.merge(ordersObj);
+    this.loadingEnd();
   }
 }

@@ -1,8 +1,13 @@
 import React from "react";
-import {HashRouter as Router, Redirect, Route, Switch} from "react-router-dom";
+import {
+  HashRouter as Router,
+  Redirect,
+  Route,
+  Switch
+} from "react-router-dom";
 import "./index.scss";
-import {Home} from "./Home";
-import {ExchangePage} from "./Exchange";
+import { Home } from "./Home";
+import { ExchangePage } from "./Exchange";
 
 export default function App() {
   return (
@@ -10,14 +15,13 @@ export default function App() {
       <div>
         <Switch>
           <Route exact path="/">
-            <Home/>
+            <Home />
           </Route>
 
           <Route path={"/exchange/:exchangeKey"}>
-            <ExchangePage/>
+            <ExchangePage />
           </Route>
-          <Redirect from="/exchange" to="/exchange/none"/>
-
+          <Redirect from="/exchange" to="/exchange/none" />
         </Switch>
       </div>
     </Router>

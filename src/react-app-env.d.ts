@@ -1,4 +1,8 @@
 /// <reference types="react-scripts" />
 
-
-declare const ccxt: any;
+declare global {
+  interface Window {
+    aa: number;
+    ccxt: typeof ccxt;
+  }
+}

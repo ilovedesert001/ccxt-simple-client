@@ -1,8 +1,15 @@
-import {SubStore} from "./core";
-import {Config} from "./Config";
-import {Exchanges} from "./res/Exchanges";
-import {UiStates} from "./UiStates";
-import {Accounts} from "./res/Accounts";
+import { SubStore } from "./core";
+import { Config } from "./Config";
+import { Exchanges } from "./res/Exchanges";
+import { UiStates } from "./UiStates";
+import { Accounts } from "./res/Accounts";
+
+import { init as bigone3 } from "../cctxPatch/bigone3";
+import { init as basefex } from "../cctxPatch/basefex";
+
+
+bigone3();
+basefex();
 
 export class AppRootStore extends SubStore<null, AppRootStore> {
   name = "root store";

@@ -1,19 +1,19 @@
 import React from "react";
-import {observer} from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 import "./index.scss";
-import {IBalanceRes} from "../../model/models";
-import {UpdatableCard} from "../UpdatableCard";
+import { BalanceModel } from "../../model/models";
+import { UpdatableCard } from "../UpdatableCard";
 import Scrollbars from "react-custom-scrollbars";
-import {Badge, Progress} from "antd";
-import {FormatPercentage, FormatValue, Ob} from "../Util";
-import {Account} from "../../state/res/Account";
-import {Market} from "../../state/res/Market";
+import { Badge, Progress } from "antd";
+import { FormatPercentage, FormatValue, Ob } from "../Util";
+import { Account } from "../../state/res/Account";
+import { Market } from "../../state/res/Market";
 
 export const CurrentBalance = observer(function CurrentBalance(props: {
   account: Account;
   market: Market;
 }) {
-  const {market, account} = props;
+  const { market, account } = props;
 
   // const account = uiStates.account; //accounts.all.find((o)=>o.)  //accounts.accountsMap.get()
 
@@ -25,32 +25,32 @@ export const CurrentBalance = observer(function CurrentBalance(props: {
   }
 
   const userOrder = account.safeGetAccountOrder(market);
-  const {profit, rate} = account.computeProfitAndRate(market);
+  const { profit, rate } = account.computeProfitAndRate(market);
 
   return (
     <UpdatableCard
       title={
         <div>
-          {account.name}-<Ob r={() => market.spec.symbol}/>
+          {account.name}-<Ob r={() => market.spec.symbol} />
         </div>
       }
       className={"BalanceCard"}
       updatableRes={market}
     >
-      <Scrollbars style={{height: 400}} autoHide={true}>
+      <Scrollbars style={{ height: 400 }} autoHide={true}>
         <div className={"BalanceCardContainer"}>
-          <BalanceItem balance={balance}/>
+          <BalanceItem balance={balance} />
 
           <div className={"ProfitSection"}>
             <h3>Profit</h3>
             <div>
-              <FormatValue val={profit} market={market.spec}/> /{" "}
-              <FormatPercentage val={rate}/>
+              <FormatValue val={profit} market={market.spec} /> /{" "}
+              <FormatPercentage val={rate} />
             </div>
 
-            <div className={'profitRow2'}>
+            <div className={"profitRow2"}>
               <div>
-                <Badge color="red" text="Cost"/>
+                <Badge color="red" text="Cost" />
                 <FormatValue
                   val={account.computeOutMoneyByHistory(userOrder.all)}
                   market={market.spec}
@@ -58,7 +58,7 @@ export const CurrentBalance = observer(function CurrentBalance(props: {
               </div>
 
               <div>
-                <Badge color="green" text="Current Value"/>
+                <Badge color="green" text="Current Value" />
                 <FormatValue
                   val={account.computeCurrentValue(market)}
                   market={market.spec}
@@ -73,18 +73,18 @@ export const CurrentBalance = observer(function CurrentBalance(props: {
 });
 
 const BalanceItem = observer(function BalanceItem(props: {
-  balance: IBalanceRes;
+  balance: BalanceModel;
 }) {
-  const {balance} = props;
+  const { balance } = props;
   const usedPercent = (balance.used / balance.total) * 100;
   const freePercent = (balance.free / balance.total) * 100;
 
   const renderRow = (color: string, percent: number, text: string, val) => {
     return (
       <div className={"BalanceItemRow"}>
-        <Progress percent={percent} size="small" showInfo={false}/>
+        <Progress percent={percent} size="small" showInfo={false} />
         <div className={"BalanceItemRowDown"}>
-          <Badge status="success" text={text}/>
+          <Badge status="success" text={text} />
           <div className={"BalanceItemRowText"}>{balance.total}</div>
         </div>
       </div>

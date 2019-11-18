@@ -1,23 +1,23 @@
-import {Layout, Menu} from "antd";
+import { Layout, Menu } from "antd";
 import React from "react";
-import {useHistory} from "react-router-dom";
-import {observer} from "mobx-react-lite";
-import {useStore} from "../state";
+import { useHistory } from "react-router-dom";
+import { observer } from "mobx-react-lite";
+import { useStore } from "../state";
 
-const {Header, Footer, Content} = Layout;
+const { Header, Footer, Content } = Layout;
 
-export const PageStruct = function (props: { children: any }) {
+export const PageStruct = function(props: { children: any }) {
   return (
     <Layout>
-      <AppHeader/>
-      <Content style={{minHeight: "90vh"}}>{props.children}</Content>
+      <AppHeader />
+      <Content style={{ minHeight: "90vh" }}>{props.children}</Content>
       <Footer>Footer</Footer>
     </Layout>
   );
 };
 
-const AppHeader = observer(function () {
-  const {uiStates} = useStore();
+const AppHeader = observer(function() {
+  const { uiStates } = useStore();
   const history = useHistory();
 
   return (
@@ -26,7 +26,7 @@ const AppHeader = observer(function () {
         theme="light"
         mode="horizontal"
         defaultSelectedKeys={["exchanges"]}
-        style={{lineHeight: "64px"}}
+        style={{ lineHeight: "64px" }}
       >
         <Menu.Item
           key="exchanges"
@@ -39,7 +39,9 @@ const AppHeader = observer(function () {
         <Menu.Item
           key="exchange"
           onClick={() => {
-            const exchangeKey = uiStates.exchange ? uiStates.exchange.exchange : '';
+            const exchangeKey = uiStates.exchange
+              ? uiStates.exchange.exchange
+              : "";
             history.push(`/exchange/${exchangeKey}`);
           }}
         >

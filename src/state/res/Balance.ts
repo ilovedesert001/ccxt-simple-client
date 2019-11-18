@@ -1,24 +1,23 @@
-import {action, computed, observable} from "mobx";
-import {BaseResModel} from "./Base";
-import {IBalanceRes} from "../../model/models";
+import { action, computed, observable } from "mobx";
+import { BaseResModel } from "./Base";
+import { BalanceModel } from "../../model/models";
 import _ from "lodash";
-import {Account} from "./Account";
+import { Account } from "./Account";
 
 export class Balance extends BaseResModel<Account> {
-
   get ccxtIns() {
     return this.parent.ccxtIns;
   }
 
-  map = observable.map<string, IBalanceRes>({}, {name: "balance"});
+  map = observable.map<string, BalanceModel>({}, { name: "balance" });
 
   @action
   async updateRes() {
     this.loadingStart();
 
-    let balances = await this.ccxtIns.fetchBalance();
-    _.each(balances, (balance, key) => {
-      balance["key"] = key;
+    let balances =  await this.ccxtIns.fetchBalance();
+    _.each(balances, (balance : BalanceModel, key) => {
+      balance.base = key;
     });
     delete balances["info"];
     this.map.merge(balances);

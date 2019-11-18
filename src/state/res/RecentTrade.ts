@@ -1,9 +1,9 @@
-import {action, observable} from "mobx";
-import {BaseResModel} from "./Base";
-import {eTickType, ITradeRes} from "../../model/models";
-import {Market} from "./Market";
+import { action, observable, runInAction } from "mobx";
+import { BaseResModel } from "./Base";
+import { eTickType, TradeModel } from "../../model/models";
+import { Market } from "./Market";
 import _ from "lodash";
-import {forTwo} from "../../Util";
+import { forTwo } from "../../Util";
 
 export class RecentTrade extends BaseResModel<Market> {
   get market() {
@@ -14,15 +14,18 @@ export class RecentTrade extends BaseResModel<Market> {
     return this.parent.parent.ccxtIns;
   }
 
-  @observable trades: ITradeRes[] = [];
+  @observable trades: TradeModel[] = [];
 
   @action
   async updateRes() {
     this.loadingStart();
     const market = this.market;
-    await this.ccxtIns.fetchTrades(market.spec.symbol).then(data => {
-      const trades = _.orderBy(data, "timestamp", ["desc"]) as ITradeRes[];
+    let trades = <TradeModel[]>(
+      await this.ccxtIns.fetchTrades(market.spec.symbol)
+    );
 
+    runInAction(() => {
+      trades = _.orderBy(trades, "timestamp", ["desc"]);
       forTwo(_.reverse(trades), (o1, o2) => {
         let tick = eTickType.zeroMinusTick;
 
@@ -42,9 +45,9 @@ export class RecentTrade extends BaseResModel<Market> {
         }
         o2.tick = tick;
       });
-
-      this.trades = _.orderBy(data, "timestamp", ["desc"]);
+      this.trades = _.orderBy(trades, "timestamp", ["desc"]);
     });
+
     this.loadingEnd();
   }
 }

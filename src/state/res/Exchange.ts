@@ -1,25 +1,24 @@
-import {action, computed, observable, runInAction} from "mobx";
-import {BaseResModel} from "./Base";
-import {Market} from "./Market";
-import {Exchanges} from "./Exchanges";
+import { action, computed, observable, runInAction } from "mobx";
+import { BaseResModel } from "./Base";
+import { Market } from "./Market";
+import { Exchanges } from "./Exchanges";
 import _ from "lodash";
-import {ITickerRes} from "../../model/models";
+import { TickerModel } from "../../model/models";
 
 export class Exchange extends BaseResModel<Exchanges> {
-  marketsMap = observable.map<string, Market>({}, {name: "marketsMap"});
+  marketsMap = observable.map<string, Market>({}, { name: "marketsMap" });
 
   constructor(root, parent) {
     super(root, parent);
 
-    window['bigone'] = this;
+    window["bigone"] = this;
   }
 
-  @observable ccxtIns = null as any;
+  @observable ccxtIns = null as ccxt.Exchange;
 
   @observable exchange = "bigone3"; // 对应ccxt里的名字
 
   @observable createCCXTOption = {
-
     urls: {
       // 'api': 'https://b1.run/api/v3/',
       api: {
@@ -29,7 +28,6 @@ export class Exchange extends BaseResModel<Exchanges> {
     }
   };
 
-
   @observable fetchedMarkets = false;
 
   @action
@@ -37,21 +35,19 @@ export class Exchange extends BaseResModel<Exchanges> {
     this.loadingStart();
 
     if (!this.fetchedMarkets) {
-      this.fetchedMarkets = true;
       let items = await this.ccxtIns.fetchMarkets();
-      console.log("刷新市场");
+      this.fetchedMarkets = true;
       runInAction(() => {
         items.forEach(item => {
           const res = new Market(this.store, this, item);
           this.marketsMap.set(item.symbol, res);
         });
-
       });
     }
 
     let items = await this.ccxtIns.fetchTickers();
     runInAction(() => {
-      _.each(items, (item: ITickerRes) => {
+      _.each(items, (item: TickerModel) => {
         const market = this.marketsMap.get(item.symbol);
         if (market) {
           market.lastTicker = item;
@@ -63,18 +59,25 @@ export class Exchange extends BaseResModel<Exchanges> {
   }
 
   getMarketsByCoinSymbol(coinSymbol: string) {
-    return Array.from(this.marketsMap.values()).filter(o => {
+    return this.allMarkets.filter(o => {
+      return o.spec.base === coinSymbol;
+    });
+  }
+  getMarketsByCoinSymbolFilterActive(coinSymbol: string) {
+    return this.allMarkets.filter(o => {
       return o.spec.base === coinSymbol;
     });
   }
 
+
+
   @action
   async createCCXTIns() {
-    this.ccxtIns = await new ccxt[this.exchange](this.createCCXTOption);
+    this.ccxtIns = await new window.ccxt[this.exchange](this.createCCXTOption);
   }
 
   @computed get allMarkets() {
-    return Array.from(this.marketsMap.values())
+    return Array.from(this.marketsMap.values());
   }
 
   getSnapShoot(): this {
@@ -82,6 +85,4 @@ export class Exchange extends BaseResModel<Exchanges> {
     delete obj.ccxtIns;
     return obj;
   }
-
-
 }

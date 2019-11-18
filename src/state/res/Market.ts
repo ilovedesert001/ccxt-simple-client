@@ -1,19 +1,18 @@
-import {action, computed, observable} from "mobx";
-import {BaseResModel} from "./Base";
-import {Exchange} from "./Exchange";
-import {IMarketRes, ITickerRes} from "../../model/models";
-import {RecentTrade} from "./RecentTrade";
-import {OrderBook} from "./OrderBook";
+import { action, computed, observable } from "mobx";
+import { BaseResModel } from "./Base";
+import { Exchange } from "./Exchange";
+import { MarketSpecModel, TickerModel } from "../../model/models";
+import { RecentTrade } from "./RecentTrade";
+import { OrderBook } from "./OrderBook";
 
 export class Market extends BaseResModel<Exchange> {
   @observable recentTrades: RecentTrade; //近期交易
   @observable orderBook: OrderBook; //买卖盘
-  @observable spec = null as IMarketRes;
+  @observable spec: MarketSpecModel = null;
 
-  @observable lastTicker = null as ITickerRes;
+  @observable lastTicker = null as TickerModel;
 
-
-  constructor(root, parent, spec: IMarketRes) {
+  constructor(root, parent, spec: MarketSpecModel) {
     super(root, parent);
     this.spec = spec;
     this.recentTrades = new RecentTrade(root, this);
@@ -40,6 +39,4 @@ export class Market extends BaseResModel<Exchange> {
       return 0;
     }
   }
-
-
 }

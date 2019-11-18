@@ -1,11 +1,11 @@
-import {action, observable} from "mobx";
-import {BaseResModel} from "./Base";
-import {Exchange} from "./Exchange";
-import {Accounts} from "./Accounts";
-import {Balance} from "./Balance";
-import {IOrderRes} from "../../model/models";
-import {AccountOrder} from "./AccountOrder";
-import {Market} from "./Market";
+import { action, observable } from "mobx";
+import { BaseResModel } from "./Base";
+import { Exchange } from "./Exchange";
+import { Accounts } from "./Accounts";
+import { Balance } from "./Balance";
+import { OrderModel } from "../../model/models";
+import { AccountOrder } from "./AccountOrder";
+import { Market } from "./Market";
 
 export class Account extends BaseResModel<Accounts> {
   constructor(root, parent) {
@@ -14,7 +14,7 @@ export class Account extends BaseResModel<Accounts> {
     this.balances = new Balance(root, this);
   }
 
-  @observable ccxtIns = null as any; //共享market， 但是私有api 通过自己的 cctx 请求
+  @observable ccxtIns = null as ccxt.Exchange; //共享market， 但是私有api 通过自己的 cctx 请求
   @observable name = "bigone3"; // account 唯一名字，不能重复
 
   @observable exchange: Exchange = null;
@@ -36,14 +36,14 @@ export class Account extends BaseResModel<Accounts> {
       exchange.createCCXTOption,
       this.createCCXTOption
     );
-    this.ccxtIns = await new ccxt[exchange.exchange](ccxtOptions);
+    this.ccxtIns = await new window.ccxt[exchange.exchange](ccxtOptions);
   }
 
   @observable balances: Balance;
 
   accountOrdersMap = observable.map<string, AccountOrder>(
     {},
-    {name: "accountOrdersMap"}
+    { name: "accountOrdersMap" }
   );
 
   @action createOrUpdateOrdersByMarket(market: Market) {
@@ -61,7 +61,7 @@ export class Account extends BaseResModel<Accounts> {
   }
 
   //计算花出去的钱
-  computeOutMoneyByHistory(orders: IOrderRes[]) {
+  computeOutMoneyByHistory(orders: OrderModel[]) {
     let toCompute = orders.filter(o => {
       return o.filled > 0; //才是真正执行过的订单
     });

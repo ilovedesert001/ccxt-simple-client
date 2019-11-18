@@ -1,13 +1,13 @@
-import {action, computed, observable} from "mobx";
-import {AppRootStore} from "../AppRootStore";
-import {Exchange} from "./Exchange";
-import {BaseResModel} from "./Base";
-import {Account} from "./Account";
-import {CommonSubLs} from "../../Util";
+import { action, computed, observable } from "mobx";
+import { AppRootStore } from "../AppRootStore";
+import { Exchange } from "./Exchange";
+import { BaseResModel } from "./Base";
+import { Account } from "./Account";
+import { CommonSubLs } from "../../Util";
 import _ from "lodash";
 
 export class Accounts extends BaseResModel<AppRootStore> {
-  accountsMap = observable.map<string, Account>({}, {name: "accountsMap"});
+  accountsMap = observable.map<string, Account>({}, { name: "accountsMap" });
 
   constructor(root, parent) {
     super(root, parent);
@@ -22,7 +22,7 @@ export class Accounts extends BaseResModel<AppRootStore> {
   @action
   async createAccount(exchange: Exchange, name: string, cctxOption) {
     if (this.accountsMap.get(name)) {
-      console.warn("已经存在此账户，不能重复添加");
+      console.warn("已经存在此账户，不能重复添加",name);
     } else {
       const account = new Account(this.store, this);
 
@@ -38,11 +38,7 @@ export class Accounts extends BaseResModel<AppRootStore> {
   }
 
   @action
-  async createAccountAndSaveLs(
-    exchange: Exchange,
-    name: string,
-    cctxOption
-  ) {
+  async createAccountAndSaveLs(exchange: Exchange, name: string, cctxOption) {
     const account = await this.createAccount(exchange, name, cctxOption);
     if (account) {
       this.lsAccountsAdd(exchange.exchange, account, cctxOption);
@@ -52,9 +48,9 @@ export class Accounts extends BaseResModel<AppRootStore> {
   lsAccounts = new CommonSubLs(this.store.config.ls, "accounts");
   lsAccountsAdd = (exchangeKey: string, account: Account, cctxOption) => {
     const arr = this.lsAccounts.lsGet("list", []) as IAccountLsOption[];
-    const a = arr.find(o => o.name);
+    const a = arr.find(o => o.name === account.name);
     if (a) {
-      console.warn("已经存在");
+      console.warn("已经存在",exchangeKey,account);
     } else {
       arr.push(
         Object.assign(

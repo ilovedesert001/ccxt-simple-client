@@ -1,17 +1,17 @@
 import React from "react";
-import {observer, useLocalStore} from "mobx-react-lite";
+import { observer, useLocalStore } from "mobx-react-lite";
 import "./index.scss";
-import {eSide, IOrderBookRes} from "../../model/models";
-import {UpdatableCard} from "../UpdatableCard";
+import { eSide, OrderBookModel } from "../../model/models";
+import { UpdatableCard } from "../UpdatableCard";
 import Scrollbars from "react-custom-scrollbars";
 import _ from "lodash";
-import {Button} from "antd";
-import {Market} from "../../state/res/Market";
+import { Button } from "antd";
+import { Market } from "../../state/res/Market";
 
 export const OrderBook = observer(function OrderBook(props: {
   market: Market;
 }) {
-  const {market} = props;
+  const { market } = props;
   const res = market.orderBook;
 
   const state = useLocalStore(() => ({
@@ -40,8 +40,7 @@ export const OrderBook = observer(function OrderBook(props: {
     }
   }));
 
-
-  const {asks, bids} = state;
+  const { asks, bids } = state;
 
   return (
     <UpdatableCard
@@ -49,7 +48,7 @@ export const OrderBook = observer(function OrderBook(props: {
       className={"OrderBook"}
       updatableRes={res}
     >
-      <Scrollbars style={{height: 600}} autoHide={true}>
+      <Scrollbars style={{ height: 600 }} autoHide={true}>
         <div className={"OrderBookContainer"}>
           <div className="OrderBookInnerHeader">
             <div className="sideBtns">
@@ -75,28 +74,28 @@ export const OrderBook = observer(function OrderBook(props: {
             {state.side === eSide.both ? (
               <>
                 {asks.map((o, index) => (
-                  <OrderBookItem key={index} item={o}/>
+                  <OrderBookItem key={index} item={o} />
                 ))}
                 <div className={"MarketPrice"}>
-                  <MarketPrice market={market}/>
+                  <MarketPrice market={market} />
                 </div>
                 {bids.map((o, index) => (
-                  <OrderBookItem key={index} item={o}/>
+                  <OrderBookItem key={index} item={o} />
                 ))}
               </>
             ) : (
               <>
                 <div className={"MarketPrice"}>
-                  <MarketPrice market={market}/>
+                  <MarketPrice market={market} />
                 </div>
                 {state.side === eSide.buy &&
-                asks.map((o, index) => (
-                  <OrderBookItem key={index} item={o}/>
-                ))}
+                  asks.map((o, index) => (
+                    <OrderBookItem key={index} item={o} />
+                  ))}
                 {state.side === eSide.sell &&
-                bids.map((o, index) => (
-                  <OrderBookItem key={index} item={o}/>
-                ))}
+                  bids.map((o, index) => (
+                    <OrderBookItem key={index} item={o} />
+                  ))}
               </>
             )}
           </div>
@@ -107,9 +106,9 @@ export const OrderBook = observer(function OrderBook(props: {
 });
 
 const OrderBookItem = observer(function OrderBookItem(props: {
-  item: IOrderBookRes;
+  item: OrderBookModel;
 }) {
-  const {item} = props;
+  const { item } = props;
 
   return (
     <div className="OrderBookItem">
@@ -120,9 +119,7 @@ const OrderBookItem = observer(function OrderBookItem(props: {
   );
 });
 
-const MarketPrice = observer(function MarketPrice(props: {
-  market: Market;
-}) {
-  const {market} = props;
+const MarketPrice = observer(function MarketPrice(props: { market: Market }) {
+  const { market } = props;
   return <div>{market.lastPrice}</div>;
 });

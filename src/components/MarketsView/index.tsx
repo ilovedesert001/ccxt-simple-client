@@ -1,21 +1,21 @@
 import React from "react";
-import {observer, useLocalStore} from "mobx-react-lite";
+import { observer, useLocalStore } from "mobx-react-lite";
 import "./index.scss";
-import {UpdatableCard} from "../UpdatableCard";
-import {Icon, Table, Tabs} from "antd";
-import {Exchange} from "../../state/res/Exchange";
-import {Market} from "../../state/res/Market";
-import {mCol, Ob} from "../Util";
-import {useStore} from "../../state";
+import { UpdatableCard } from "../UpdatableCard";
+import { Icon, Tabs } from "antd";
+import { Exchange } from "../../state/res/Exchange";
+import { Market } from "../../state/res/Market";
+import { MobTable } from "../Util";
+import { useStore } from "../../state";
 
-const {TabPane} = Tabs;
+const { TabPane } = Tabs;
 
 export const MarketsView = observer(function MarketsView(props: {
   exchange: Exchange;
 }) {
-  const {exchange} = props;
+  const { exchange } = props;
 
-  const {uiStates} = useStore();
+  const { uiStates } = useStore();
 
   const state = useLocalStore(() => ({
     get quotes(): string[] {
@@ -38,12 +38,14 @@ export const MarketsView = observer(function MarketsView(props: {
 
       const markets: Market[] = [];
       balances.forEach(balance => {
-        markets.push(...account.exchange.getMarketsByCoinSymbol(balance.key));
+        markets.push(
+          ...account.exchange.getMarketsByCoinSymbolFilterActive(balance.base)
+        );
       });
 
       return (
-        <TabPane tab={<Icon type="bank"/>} key={account.name}>
-          <MarketsTable markets={markets}/>
+        <TabPane tab={<Icon type="bank" />} key={account.name}>
+          <MarketsTable markets={markets} />
         </TabPane>
       );
     }
@@ -54,20 +56,18 @@ export const MarketsView = observer(function MarketsView(props: {
       title={"Markets"}
       className={"Markets"}
       updatableRes={exchange}
+      updateImmediately={false}
     >
-      <Tabs defaultActiveKey="1" onChange={() => {
-      }}>
-        {/*<TabPane tab="Tab 3" key="3">*/}
-        {/*  Content of Tab Pane 3*/}
-        {/*</TabPane>*/}
-
+      <Tabs defaultActiveKey="1" onChange={() => {}}>
         {renderCurrentAccount()}
 
         {state.quotes.map(v => {
-          const markets = exchange.allMarkets.filter(o => o.spec.quote === v);
+          const markets = exchange.allMarkets.filter(
+            o => o.spec.active && o.spec.quote === v
+          );
           return (
             <TabPane tab={v} key={v}>
-              <MarketsTable markets={markets}/>
+              <MarketsTable markets={markets} />
             </TabPane>
           );
         })}
@@ -76,28 +76,18 @@ export const MarketsView = observer(function MarketsView(props: {
   );
 });
 
-{
-  /*<Scrollbars style={{ height: 600 }} autoHide={true}>*/
-}
-{
-  /*  <div className={"OrderBookContainer"}>AAA</div>*/
-}
-{
-  /*</Scrollbars>*/
-}
-
 const MarketsTable = observer(function MarketsTable(props: {
   markets: Market[];
 }) {
-  const {markets} = props;
+  const { markets } = props;
 
-  const {uiStates} = useStore();
+  const { uiStates } = useStore();
 
   return (
-    <Table
+    <MobTable<Market>
       size={"small"}
       dataSource={markets}
-      rowKey={(row: Market) => {
+      rowKey={row => {
         return row.spec.symbol;
       }}
       onRow={(row: Market) => {
@@ -108,27 +98,16 @@ const MarketsTable = observer(function MarketsTable(props: {
         };
       }}
       columns={[
-        mCol({
+        {
           dataIndex: "exchange",
-          templateRender: (row: Market, v) => (
-            <Ob
-              r={() => {
-                return <div>{row.spec.symbol}</div>;
-              }}
-            />
-          )
-        }),
-
-        mCol({
+          render: (v, row) => <div>{row.spec.symbol}</div>
+        },
+        {
           dataIndex: "price",
-          templateRender: (row: Market, v) => (
-            <Ob
-              r={() => {
-                return <div>{row.lastTicker && row.lastTicker.close}</div>;
-              }}
-            />
+          render: (v, row) => (
+            <div>{row.lastTicker && row.lastTicker.close}</div>
           )
-        })
+        }
       ]}
     />
   );

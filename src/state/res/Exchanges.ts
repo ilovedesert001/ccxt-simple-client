@@ -1,11 +1,11 @@
-import {action, computed, observable} from "mobx";
-import {AppRootStore} from "../AppRootStore";
-import {Exchange} from "./Exchange";
-import {BaseResModel} from "./Base";
+import { action, computed, observable } from "mobx";
+import { AppRootStore } from "../AppRootStore";
+import { Exchange } from "./Exchange";
+import { BaseResModel } from "./Base";
 import _ from "lodash";
 
 export class Exchanges extends BaseResModel<AppRootStore> {
-  exchangesMap = observable.map<string, Exchange>({}, {name: "exchangesMap"});
+  exchangesMap = observable.map<string, Exchange>({}, { name: "exchangesMap" });
 
   constructor(root, parent) {
     super(root, parent);
@@ -28,7 +28,18 @@ export class Exchanges extends BaseResModel<AppRootStore> {
     }
     */
 
-    const exchangesNames = ["bittrex"];
+    const exchangesNames = [
+      "bittrex", // dwad
+      "basefex",
+      "bitmex",
+      'coss',
+      'bibox',
+      'huobipro',
+      'okex3',
+      'poloniex',
+      // 'bitstamp',
+      'coinbasepro'
+    ];
 
     ///ccxt.exchanges
     _.each(exchangesNames, name => {

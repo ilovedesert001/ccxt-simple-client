@@ -1,7 +1,7 @@
-import {action, observable} from "mobx";
-import {BaseResModel} from "./Base";
-import {IOrderBookRes} from "../../model/models";
-import {Market} from "./Market";
+import { action, observable } from "mobx";
+import { BaseResModel } from "./Base";
+import { OrderBookModel } from "../../model/models";
+import { Market } from "./Market";
 
 export class OrderBook extends BaseResModel<Market> {
   get market() {
@@ -12,8 +12,8 @@ export class OrderBook extends BaseResModel<Market> {
     return this.parent.parent.ccxtIns;
   }
 
-  @observable asks: IOrderBookRes[] = [];
-  @observable bids: IOrderBookRes[] = [];
+  @observable asks: OrderBookModel[] = [];
+  @observable bids: OrderBookModel[] = [];
 
   transferToOrderBookRes = (originItem: number[]) => {
     return {
@@ -21,7 +21,7 @@ export class OrderBook extends BaseResModel<Market> {
       size: originItem[1],
       accumulateSize: originItem[1]
       // side:,
-    } as IOrderBookRes;
+    } as OrderBookModel;
   };
 
   @action

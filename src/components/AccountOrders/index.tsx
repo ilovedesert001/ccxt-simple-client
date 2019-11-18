@@ -1,12 +1,12 @@
 import React from "react";
-import {observer, useLocalStore} from "mobx-react-lite";
+import { observer, useLocalStore } from "mobx-react-lite";
 import "./index.scss";
-import {IOrderRes} from "../../model/models";
-import {UpdatableCard} from "../UpdatableCard";
-import {Table, Tabs} from "antd";
-import {FormatTimeAuto, mCol, Ob} from "../Util";
-import {Account} from "../../state/res/Account";
-import {Market} from "../../state/res/Market";
+import { OrderModel } from "../../model/models";
+import { UpdatableCard } from "../UpdatableCard";
+import { Tabs } from "antd";
+import { FormatTimeAuto, MobTable, Ob } from "../Util";
+import { Account } from "../../state/res/Account";
+import { Market } from "../../state/res/Market";
 
 const TabPane = Tabs.TabPane;
 
@@ -14,7 +14,7 @@ export const AccountOrders = observer(function AccountOrders(props: {
   account: Account;
   market: Market;
 }) {
-  const {account, market} = props;
+  const { account, market } = props;
 
   const res = account.safeGetAccountOrder(market);
 
@@ -28,26 +28,43 @@ export const AccountOrders = observer(function AccountOrders(props: {
 
   const renderTable = orders => {
     return (
-      <Table
+      <MobTable<OrderModel>
         size={"small"}
         dataSource={orders}
         rowKey={"id"}
         columns={[
-          mCol({dataIndex: "symbol"}),
-          mCol({
+          {
+            dataIndex: "symbol"
+          },
+          {
             dataIndex: "timestamp",
-            templateRender: (row: IOrderRes) => (
-              <FormatTimeAuto val={row.timestamp}/>
-            )
-          }),
-          mCol({dataIndex: "side"}),
-          mCol({dataIndex: "type"}),
-          mCol({dataIndex: "status"}),
-          mCol({dataIndex: "amount"}),
-          mCol({dataIndex: "cost"}),
-          mCol({dataIndex: "price"}),
-          mCol({dataIndex: "filled"}),
-          mCol({dataIndex: "remaining"})
+            render: v => <FormatTimeAuto val={v} />
+          },
+          {
+            dataIndex: "side"
+          },
+          {
+            dataIndex: "type"
+          },
+          {
+            dataIndex: "status"
+          },
+
+          {
+            dataIndex: "amount"
+          },
+          {
+            dataIndex: "cost"
+          },
+          {
+            dataIndex: "price"
+          },
+          {
+            dataIndex: "filled"
+          },
+          {
+            dataIndex: "remaining"
+          }
         ]}
       />
     );
@@ -57,7 +74,7 @@ export const AccountOrders = observer(function AccountOrders(props: {
     <UpdatableCard
       title={
         <div>
-          Orders <Ob r={() => market.spec.symbol}/>
+          Orders <Ob r={() => market.spec.symbol} />
         </div>
       }
       className={"UserOrders"}

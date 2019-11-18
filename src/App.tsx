@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import "./styles/App.scss";
-import {AppRootStore} from "./state/AppRootStore";
-import {StoreContext} from "./state";
+import { AppRootStore } from "./state/AppRootStore";
+import { StoreContext } from "./state";
 
 import RouterApp from "./pages/index";
 
@@ -21,7 +21,7 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <StoreContext.Provider value={store}>
-        {ready && <RouterApp/>}
+        {ready && <RouterApp />}
       </StoreContext.Provider>
     </div>
   );

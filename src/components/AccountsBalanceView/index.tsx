@@ -1,29 +1,28 @@
-import React, {useEffect, useRef} from "react";
-import {observer, useLocalStore} from "mobx-react-lite";
-import {mCol} from "../Util";
-import {Button, Form, Input, Modal, Table, Tabs, Tag} from "antd";
+import React, { useEffect, useRef } from "react";
+import { observer, useLocalStore } from "mobx-react-lite";
+import { Button, Form, Input, Modal, Tabs, Tag } from "antd";
 import "./index.scss";
-import {UpdatableCard} from "../UpdatableCard";
-import {useStore} from "../../state";
-import {Exchange} from "../../state/res/Exchange";
-import {WrappedFormUtils} from "antd/lib/form/Form";
-import {Account} from "../../state/res/Account";
-import {IBalanceRes} from "../../model/models";
-import {CurrentBalance} from "../CurrentBalance";
+import { UpdatableCard } from "../UpdatableCard";
+import { useStore } from "../../state";
+import { Exchange } from "../../state/res/Exchange";
+import { WrappedFormUtils } from "antd/lib/form/Form";
+import { Account } from "../../state/res/Account";
+import { BalanceModel } from "../../model/models";
+import { CurrentBalance } from "../CurrentBalance";
+import { MobTable } from "../Util";
 
-const {TabPane} = Tabs;
+const { TabPane } = Tabs;
 
 export const AccountsBalanceView = observer(
   function AccountsBalanceView(props: { exchange: Exchange }) {
-    const {exchange} = props;
+    const { exchange } = props;
 
-    const {uiStates} = useStore();
+    const { uiStates } = useStore();
 
     return (
-      <Tabs defaultActiveKey="1" onChange={() => {
-      }}>
+      <Tabs defaultActiveKey="1" onChange={() => {}}>
         <TabPane tab="Accounts" key="1">
-          <AccountsView exchange={exchange}/>
+          <AccountsView exchange={exchange} />
         </TabPane>
         <TabPane tab="Balance" key="2">
           {uiStates.market && uiStates.account && (
@@ -41,9 +40,9 @@ export const AccountsBalanceView = observer(
 export const AccountsView = observer(function AccountsView(props: {
   exchange: Exchange;
 }) {
-  const {exchange} = props;
+  const { exchange } = props;
 
-  const {accounts, uiStates} = useStore();
+  const { accounts, uiStates } = useStore();
 
   const formRef = useRef(null as any);
 
@@ -73,8 +72,7 @@ export const AccountsView = observer(function AccountsView(props: {
     }
   }));
 
-  useEffect(() => {
-  }, []);
+  useEffect(() => {}, []);
 
   const list = accounts.all.filter(o => o.exchange === exchange);
 
@@ -83,8 +81,7 @@ export const AccountsView = observer(function AccountsView(props: {
       title={<div>Accounts in:{exchange.exchange}</div>}
       updatableRes={accounts}
     >
-
-      <div style={{padding: 12}}>
+      <div style={{ padding: 12 }}>
         <Button
           type={"primary"}
           onClick={() => {
@@ -94,7 +91,6 @@ export const AccountsView = observer(function AccountsView(props: {
           add
         </Button>
       </div>
-
 
       <AccountCreateForm
         wrappedComponentRef={formRef as any}
@@ -107,31 +103,30 @@ export const AccountsView = observer(function AccountsView(props: {
         }}
       />
 
-      <Table
+      <MobTable<Account>
         size={"small"}
         dataSource={list}
         rowKey={row => {
           return row.name;
         }}
         columns={[
-          mCol({
+          {
             dataIndex: "name",
-            templateRender(row: Account) {
-              return (
-                <Tag
-                  color="gold"
-                  onClick={() => {
-                    uiStates.account = row;
-                  }}
-                >
-                  {row.name}
-                </Tag>
-              );
-            }
-          }),
-          mCol({
+            render: (v, row) => (
+              <Tag
+                color="gold"
+                onClick={() => {
+                  uiStates.account = row;
+                }}
+              >
+                {row.name}
+              </Tag>
+            )
+          },
+
+          {
             dataIndex: "action",
-            templateRender: (row: Account, v) => (
+            render: (v, row) => (
               <div>
                 <Button
                   type={"danger"}
@@ -144,12 +139,12 @@ export const AccountsView = observer(function AccountsView(props: {
                 </Button>
               </div>
             )
-          })
+          }
         ]}
       />
 
       {uiStates.account && (
-        <UserAsset key={uiStates.account.name} account={uiStates.account}/>
+        <UserAsset key={uiStates.account.name} account={uiStates.account} />
       )}
     </UpdatableCard>
   );
@@ -161,19 +156,19 @@ const AccountCreateForm = Form.create<{
   onCreate;
   form;
   wrappedComponentRef;
-}>({name: "AccountCreateForm"})(
+}>({ name: "AccountCreateForm" })(
   class extends React.Component {
     render() {
-      const {visible, onCancel, onCreate, form} = this.props as any;
-      const {getFieldDecorator} = form;
+      const { visible, onCancel, onCreate, form } = this.props as any;
+      const { getFieldDecorator } = form;
       return <HookForm {...this.props} />;
     }
   }
 );
 
 function HookForm(props: any) {
-  const {visible, onCancel, onCreate, form} = props;
-  const {getFieldDecorator} = form;
+  const { visible, onCancel, onCreate, form } = props;
+  const { getFieldDecorator } = form;
   return (
     <Modal
       visible={visible}
@@ -190,7 +185,7 @@ function HookForm(props: any) {
                 required: true
               }
             ]
-          })(<Input/>)}
+          })(<Input />)}
         </Form.Item>
         <Form.Item label="apiKey">
           {getFieldDecorator("apiKey", {
@@ -199,7 +194,7 @@ function HookForm(props: any) {
                 required: true
               }
             ]
-          })(<Input/>)}
+          })(<Input />)}
         </Form.Item>
         <Form.Item label="secret">
           {getFieldDecorator("secret", {
@@ -208,7 +203,7 @@ function HookForm(props: any) {
                 required: true
               }
             ]
-          })(<Input/>)}
+          })(<Input />)}
         </Form.Item>
       </Form>
     </Modal>
@@ -216,9 +211,9 @@ function HookForm(props: any) {
 }
 
 const UserAsset = observer(function UserAsset(props: { account: Account }) {
-  const {account} = props;
+  const { account } = props;
 
-  const {uiStates} = useStore();
+  const { uiStates } = useStore();
 
   const list = account.balances.balancesNotZero;
 
@@ -228,15 +223,15 @@ const UserAsset = observer(function UserAsset(props: { account: Account }) {
         title={<div>Balances</div>}
         updatableRes={account.balances}
       >
-        <Table
+        <MobTable<BalanceModel>
           size={"small"}
           dataSource={list}
-          rowKey={"key"}
+          rowKey={"base"}
           columns={[
-            mCol({
-              dataIndex: "key",
-              templateRender: (row: IBalanceRes) => {
-                const coinSymbol = row.key;
+            {
+              dataIndex: "base",
+              render: (v, row) => {
+                const coinSymbol = row.base;
                 const markets = account.exchange.getMarketsByCoinSymbol(
                   coinSymbol
                 );
@@ -244,7 +239,7 @@ const UserAsset = observer(function UserAsset(props: { account: Account }) {
 
                 return (
                   <div>
-                    {row.key} {/*{markets.length && (*/}
+                    {row.base} {/*{markets.length && (*/}
                     {/*  <Button*/}
                     {/*    type={"primary"}*/}
                     {/*    shape="circle"*/}
@@ -260,8 +255,10 @@ const UserAsset = observer(function UserAsset(props: { account: Account }) {
                   </div>
                 );
               }
-            }),
-            mCol({dataIndex: "total"}),
+            },
+            {
+              dataIndex: "total"
+            }
             // mCol({ dataIndex: "free" }),
             // mCol({ dataIndex: "used" })
           ]}
