@@ -33,9 +33,15 @@
       display: flex;
       @include animationAllFast;
 
+      height: 18px;
+      line-height: 16px;
+
+      font-size: 10px;
+      font-family: AtlasTypewriter;
+
       &:hover,
       &:active {
-        background-color: #cfe0d4;
+        background-color: #3a444d;
       }
 
       > .price {
@@ -50,6 +56,22 @@
       > .accumulateSize {
         flex: 1;
         margin-right: 8px;
+      }
+    }
+
+    .asks {
+      .OrderBookItem {
+        > .price {
+          color: $main-sell-color;
+        }
+      }
+    }
+
+    .bids {
+      .OrderBookItem {
+        > .price {
+          color: $main-buy-color;
+        }
       }
     }
 

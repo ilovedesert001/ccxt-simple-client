@@ -39,13 +39,15 @@ const RecentTradesItem = observer(function RecentTradesItem(props: {
 
   return (
     <div className="TradeHistoryContainer_item">
-      <TickItem tick={trade.tick} />
-      <div className="price">{trade.price}</div>
       <div className="volume">{trade.amount}</div>
+      <div className={`price ${trade.side}`}>
+        <TickItem tick={trade.tick} />
+        {trade.price}
+      </div>
       <div className="time">
         <FormatTimeAuto val={trade.timestamp} />
       </div>
-      <div className="side">{trade.side === eSide.buy ? "B" : "S"}</div>
+      {/*<div className="side">{trade.side === eSide.buy ? "B" : "S"}</div>*/}
     </div>
   );
 });

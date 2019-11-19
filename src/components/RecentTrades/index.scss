@@ -1,47 +1,60 @@
 @import "../../styles/var";
 
 .RecentTrades {
-
-
   .TradeHistoryContainer {
     .TradeHistoryContainer_item {
       display: flex;
       @include animationAllFast;
 
-      &:hover, &:active {
-        background-color: #cfe0d4;
-      }
+      height: 18px;
+      line-height: 16px;
 
-      > .icon {
-        flex: 0 0 20px;
-        text-align: center;
+      font-size: 10px;
+      font-family: AtlasTypewriter;
 
-        &.plusTick, &.ZeroPlusTick {
-          color: $main-buy-color;
-        }
-
-        &.minusTick, &.ZeroMinusTick {
-          color: $main-sell-color;
-        }
-
-      }
-
-      > .price {
-        flex: 1;
+      &:hover,
+      &:active {
+        background-color: #3a444d;
       }
 
       > .volume {
         flex: 1;
+        margin-left: 8px;
+      }
+
+      > .price {
+        flex: 1;
+        display: flex;
+        &.buy {
+          color: $main-buy-color;
+        }
+
+        &.sell {
+          color: $main-sell-color;
+        }
+
+        > .icon {
+          flex: 0 0 20px;
+          text-align: center;
+
+          &.plusTick,
+          &.ZeroPlusTick {
+            //color: $main-buy-color;
+          }
+
+          &.minusTick,
+          &.ZeroMinusTick {
+            //color: $main-sell-color;
+          }
+        }
       }
 
       > .time {
         flex: 1;
-      }
-
-      > .side {
+        color: #697277;
         margin-right: 8px;
+        text-align: center;
       }
-
     }
   }
 }

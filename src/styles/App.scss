@@ -1,5 +1,6 @@
-@import '~antd/dist/antd.css';
-
+@import "base";
+@import "~antd/dist/antd.css";
+@import "antdStyle";
 
 /* Scrollbar styles */
 //::-webkit-scrollbar {
@@ -17,5 +18,3 @@
 //  background: yellowgreen;
 //  box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
 //}
-
-

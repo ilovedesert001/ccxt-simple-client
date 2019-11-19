@@ -3,12 +3,10 @@
 }
 
 @mixin animationAllFast {
-  transition: all 0.1s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: all 80ms cubic-bezier(0.645, 0.045, 0.355, 1);
 }
-
 
 $main-buy-color: #70c573;
 $main-sell-color: #e18284;
 
 $tip-info-color: rgba(49, 50, 56, 0.5);
-

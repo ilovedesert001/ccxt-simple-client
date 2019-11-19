@@ -15,7 +15,7 @@ export const OrderBook = observer(function OrderBook(props: {
   const res = market.orderBook;
 
   const state = useLocalStore(() => ({
-    showNum: 12,
+    showNum: 14,
     side: eSide.both as eSide,
     get asks() {
       let items = [];
@@ -41,6 +41,16 @@ export const OrderBook = observer(function OrderBook(props: {
   }));
 
   const { asks, bids } = state;
+
+  const renderList = (list: OrderBookModel[], side: string) => {
+    return (
+      <div className={side}>
+        {list.map((o, index) => (
+          <OrderBookItem key={index} item={o} />
+        ))}
+      </div>
+    );
+  };
 
   return (
     <UpdatableCard
@@ -73,29 +83,19 @@ export const OrderBook = observer(function OrderBook(props: {
           <div className="centeredContent">
             {state.side === eSide.both ? (
               <>
-                {asks.map((o, index) => (
-                  <OrderBookItem key={index} item={o} />
-                ))}
+                {renderList(asks, "asks")}
                 <div className={"MarketPrice"}>
                   <MarketPrice market={market} />
                 </div>
-                {bids.map((o, index) => (
-                  <OrderBookItem key={index} item={o} />
-                ))}
+                {renderList(bids, "bids")}
               </>
             ) : (
               <>
                 <div className={"MarketPrice"}>
                   <MarketPrice market={market} />
                 </div>
-                {state.side === eSide.buy &&
-                  asks.map((o, index) => (
-                    <OrderBookItem key={index} item={o} />
-                  ))}
-                {state.side === eSide.sell &&
-                  bids.map((o, index) => (
-                    <OrderBookItem key={index} item={o} />
-                  ))}
+                {state.side === eSide.buy && renderList(asks, "asks")}
+                {state.side === eSide.sell && renderList(asks, "bids")}
               </>
             )}
           </div>

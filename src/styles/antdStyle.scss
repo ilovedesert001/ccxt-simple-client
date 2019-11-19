@@ -1,0 +1,11 @@
+.ant-table {
+  color: white !important;
+  line-height: 1;
+
+  .ant-table-thead {
+    color: white !important;
+    > tr > th {
+      color: white !important;
+    }
+  }
+}

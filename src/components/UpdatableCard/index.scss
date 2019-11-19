@@ -1,8 +1,10 @@
 @import "../../styles/var";
 
 .UpdatableCard {
+  background: #15232c;
 
   .ant-card-head-title {
+    color: white;
 
     .titleWithUpdateTime {
       line-height: 1;
@@ -12,9 +14,12 @@
       > .updateTime {
         margin-left: 8px;
         font-size: 10px;
-        color: $tip-info-color;
+        color: #999;
       }
     }
+  }
+  .ant-card-body {
+    color: white;
   }
 
   &.noContentPadding {
@@ -22,5 +27,4 @@
       padding: 0;
     }
   }
-
 }
