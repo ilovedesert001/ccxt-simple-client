@@ -13,10 +13,14 @@
       font-size: 10px;
       font-family: AtlasTypewriter;
 
-
       > .volume {
         flex: 1;
         margin-left: 8px;
+        .Nf {
+          .invalidSection {
+            color: gray;
+          }
+        }
       }
 
       > .price {

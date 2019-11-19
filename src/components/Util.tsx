@@ -1,10 +1,10 @@
 import _ from "lodash";
 import React from "react";
 import { observer, Observer } from "mobx-react-lite";
-import { MarketSpecModel } from "../model/models";
+import { eTickType, MarketSpecModel } from "../model/models";
 import { format, isToday } from "date-fns";
 import { ColumnProps, TableProps } from "antd/lib/table";
-import { Button, Table } from "antd";
+import { Button, Icon, Table } from "antd";
 import ReactTimeAgo from "timeago-react";
 
 export function MobTable<T>(props: TableProps<T>) {
@@ -102,4 +102,63 @@ export const TimeAgo = observer(function(props: { time: number | Date }) {
   } else {
     return time as any;
   }
+});
+
+export const TickItem = observer(function TickItem(props: { tick: eTickType }) {
+  const { tick } = props;
+
+  let icon = <Icon type="arrow-up" />;
+
+  switch (tick) {
+    case eTickType.plusTick:
+      icon = <Icon type="arrow-up" />;
+      break;
+    case eTickType.zeroPlusTick:
+      icon = <Icon type="caret-up" />;
+      break;
+    case eTickType.minusTick:
+      icon = <Icon type="arrow-down" />;
+      break;
+    case eTickType.zeroMinusTick:
+      icon = <Icon type="caret-down" />;
+      break;
+  }
+
+  return <div className={`icon ${tick}`}>{icon}</div>;
+});
+
+export const NumberSeparateFormat = observer(
+  (props: { num: number; fixed: number }) => {
+    const { fixed, num } = props;
+
+    const numFixed = fixed ? num.toFixed(fixed) : String(num);
+
+    const valid = String(Number(numFixed));
+    const zero = numFixed.substr(valid.length);
+
+    return (
+      <span className={"Nf"}>
+        {valid}
+        <span className={"invalidSection"}>{zero}</span>
+      </span>
+    );
+  }
+);
+
+export const FormatBase = observer(function FormatBase(props: {
+  val: number;
+  spec: MarketSpecModel;
+}) {
+  const { val, spec } = props;
+  const fixedNum = spec.precision.base || spec.precision.amount;
+  return <NumberSeparateFormat num={val} fixed={fixedNum} />;
+});
+
+export const FormatQuote = observer(function FormatQuote(props: {
+  val: number;
+  spec: MarketSpecModel;
+}) {
+  const { val, spec } = props;
+  const fixedNum = spec.precision.quote || spec.precision.price;
+  return <NumberSeparateFormat num={val} fixed={fixedNum} />;
 });

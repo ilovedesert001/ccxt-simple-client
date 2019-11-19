@@ -7,6 +7,7 @@ import { Exchange } from "../../state/res/Exchange";
 import { Market } from "../../state/res/Market";
 import { MobTable } from "../Util";
 import { useStore } from "../../state";
+import Scrollbars from "react-custom-scrollbars";
 
 const { TabPane } = Tabs;
 
@@ -45,7 +46,7 @@ export const MarketsView = observer(function MarketsView(props: {
 
       return (
         <TabPane tab={<Icon type="bank" />} key={account.name}>
-          <MarketsTable markets={markets} />
+          <MarketsList markets={markets} />
         </TabPane>
       );
     }
@@ -60,14 +61,13 @@ export const MarketsView = observer(function MarketsView(props: {
     >
       <Tabs defaultActiveKey="1" onChange={() => {}}>
         {renderCurrentAccount()}
-
         {state.quotes.map(v => {
           const markets = exchange.allMarkets.filter(
             o => o.spec.active && o.spec.quote === v
           );
           return (
             <TabPane tab={v} key={v}>
-              <MarketsTable markets={markets} />
+              <MarketsList markets={markets} />
             </TabPane>
           );
         })}
@@ -76,7 +76,7 @@ export const MarketsView = observer(function MarketsView(props: {
   );
 });
 
-const MarketsTable = observer(function MarketsTable(props: {
+const MarketsList = observer(function MarketsTable(props: {
   markets: Market[];
 }) {
   const { markets } = props;
@@ -84,31 +84,22 @@ const MarketsTable = observer(function MarketsTable(props: {
   const { uiStates } = useStore();
 
   return (
-    <MobTable<Market>
-      size={"small"}
-      dataSource={markets}
-      rowKey={row => {
-        return row.spec.symbol;
-      }}
-      onRow={(row: Market) => {
-        return {
-          onClick() {
-            uiStates.market = row;
-          }
-        };
-      }}
-      columns={[
-        {
-          dataIndex: "exchange",
-          render: (v, row) => <div>{row.spec.symbol}</div>
-        },
-        {
-          dataIndex: "price",
-          render: (v, row) => (
-            <div>{row.lastTicker && row.lastTicker.close}</div>
-          )
-        }
-      ]}
-    />
+    <Scrollbars style={{ height: 550 }} autoHide={true}>
+      <div className={"MarketsList"}>
+        {markets.map(row => (
+          <div
+            className={"MarketsListItem"}
+            onClick={() => {
+              uiStates.market = row;
+            }}
+          >
+            <div className="exchangeName">{row.spec.symbol}</div>
+            <div className="latestPrice">
+              {row.lastTicker && row.lastTicker.close}
+            </div>
+          </div>
+        ))}
+      </div>
+    </Scrollbars>
   );
 });

@@ -7,6 +7,7 @@ import Scrollbars from "react-custom-scrollbars";
 import _ from "lodash";
 import { Button } from "antd";
 import { Market } from "../../state/res/Market";
+import { FormatBase, FormatQuote, NumberSeparateFormat } from "../Util";
 
 export const OrderBook = observer(function OrderBook(props: {
   market: Market;
@@ -46,7 +47,7 @@ export const OrderBook = observer(function OrderBook(props: {
     return (
       <div className={side}>
         {list.map((o, index) => (
-          <OrderBookItem key={index} item={o} />
+          <OrderBookItem key={index} item={o} market={market} />
         ))}
       </div>
     );
@@ -107,14 +108,21 @@ export const OrderBook = observer(function OrderBook(props: {
 
 const OrderBookItem = observer(function OrderBookItem(props: {
   item: OrderBookModel;
+  market: Market;
 }) {
-  const { item } = props;
+  const { item, market } = props;
 
   return (
     <div className="OrderBookItem">
-      <div className={"price"}>{item.price}</div>
-      <div className={"size"}>{item.size}</div>
-      <div className={"accumulateSize"}>{item.accumulateSize}</div>
+      <div className={"price"}>
+        <FormatQuote val={item.price} spec={market.spec} />
+      </div>
+      <div className={"size"}>
+        <FormatBase val={item.size} spec={market.spec} />
+      </div>
+      <div className={"accumulateSize"}>
+        <FormatBase val={item.accumulateSize} spec={market.spec} />
+      </div>
     </div>
   );
 });

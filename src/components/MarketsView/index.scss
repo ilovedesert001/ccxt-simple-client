@@ -1,1 +1,32 @@
 @import "../../styles/var";
+
+.Markets {
+  .ant-tabs-bar {
+    margin: 0;
+  }
+
+  .MarketsList {
+    color: white;
+
+    .MarketsListItem {
+      display: flex;
+      height: 28px;
+      align-items: center;
+      @include listHoverAnimation;
+
+      border-top: 1px solid #101117;
+
+      font-size: 12px;
+      font-family: AtlasTypewriter;
+
+      .exchangeName {
+        flex: 1;
+        margin-left: 12px;
+      }
+
+      .latestPrice {
+        margin-right: 12px;
+      }
+    }
+  }
+}

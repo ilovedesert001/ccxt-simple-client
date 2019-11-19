@@ -1,6 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
-import { FormatTimeAuto } from "../Util";
+import { FormatBase, FormatQuote, FormatTimeAuto, TickItem } from "../Util";
 import { Icon } from "antd";
 import "./index.scss";
 import { eSide, eTickType, TradeModel } from "../../model/models";
@@ -24,7 +24,7 @@ export const RecentTrades = observer(function RecentTrades(props: {
       <Scrollbars style={{ height: 600 }} autoHide={true}>
         <div className={"TradeHistoryContainer"}>
           {list.map(o => (
-            <RecentTradesItem key={o.id} trade={o} />
+            <RecentTradesItem key={o.id} trade={o} market={market} />
           ))}
         </div>
       </Scrollbars>
@@ -34,15 +34,18 @@ export const RecentTrades = observer(function RecentTrades(props: {
 
 const RecentTradesItem = observer(function RecentTradesItem(props: {
   trade: TradeModel;
+  market: Market;
 }) {
-  const { trade } = props;
+  const { trade, market } = props;
 
   return (
     <div className="TradeHistoryContainer_item">
-      <div className="volume">{trade.amount}</div>
+      <div className="volume">
+        <FormatBase val={trade.amount} spec={market.spec} />
+      </div>
       <div className={`price ${trade.side}`}>
         <TickItem tick={trade.tick} />
-        {trade.price}
+        <FormatQuote val={trade.price} spec={market.spec} />
       </div>
       <div className="time">
         <FormatTimeAuto val={trade.timestamp} />
@@ -50,27 +53,4 @@ const RecentTradesItem = observer(function RecentTradesItem(props: {
       {/*<div className="side">{trade.side === eSide.buy ? "B" : "S"}</div>*/}
     </div>
   );
-});
-
-const TickItem = observer(function TickItem(props: { tick: eTickType }) {
-  const { tick } = props;
-
-  let icon = <Icon type="arrow-up" />;
-
-  switch (tick) {
-    case eTickType.plusTick:
-      icon = <Icon type="arrow-up" />;
-      break;
-    case eTickType.zeroPlusTick:
-      icon = <Icon type="caret-up" />;
-      break;
-    case eTickType.minusTick:
-      icon = <Icon type="arrow-down" />;
-      break;
-    case eTickType.zeroMinusTick:
-      icon = <Icon type="caret-down" />;
-      break;
-  }
-
-  return <div className={`icon ${tick}`}>{icon}</div>;
 });
