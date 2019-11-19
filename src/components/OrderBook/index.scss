@@ -31,7 +31,6 @@
 
     .OrderBookItem {
       display: flex;
-      @include animationAllFast;
 
       height: 18px;
       line-height: 16px;
@@ -39,10 +38,7 @@
       font-size: 10px;
       font-family: AtlasTypewriter;
 
-      &:hover,
-      &:active {
-        background-color: #3a444d;
-      }
+      @include listHoverAnimation;
 
       > .price {
         flex: 1;

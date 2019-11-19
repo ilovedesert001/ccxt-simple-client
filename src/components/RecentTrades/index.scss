@@ -4,7 +4,8 @@
   .TradeHistoryContainer {
     .TradeHistoryContainer_item {
       display: flex;
-      @include animationAllFast;
+
+      @include listHoverAnimation;
 
       height: 18px;
       line-height: 16px;
@@ -12,10 +13,6 @@
       font-size: 10px;
       font-family: AtlasTypewriter;
 
-      &:hover,
-      &:active {
-        background-color: #3a444d;
-      }
 
       > .volume {
         flex: 1;
