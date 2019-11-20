@@ -1,7 +1,8 @@
 import { action, observable } from "mobx";
 import { BaseResModel } from "./Base";
-import { OrderBookModel } from "../../model/models";
+import { OrderBookModel, TradeModel } from "../../model/models";
 import { Market } from "./Market";
+import _ from "lodash";
 
 export class OrderBook extends BaseResModel<Market> {
   get market() {
@@ -33,5 +34,13 @@ export class OrderBook extends BaseResModel<Market> {
       this.asks = data.asks.map(this.transferToOrderBookRes);
     });
     this.loadingEnd();
+  }
+
+  test1(intervalTime = 1000) {
+    window.setInterval(() => {
+      this.market.orderBook.asks[0].price += 1;
+
+      this.market.orderBook.asks[3].price += 1;
+    }, intervalTime);
   }
 }

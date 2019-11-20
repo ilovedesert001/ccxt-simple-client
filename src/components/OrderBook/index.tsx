@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { observer, useLocalStore } from "mobx-react-lite";
 import "./index.scss";
 import { eSide, OrderBookModel } from "../../model/models";
@@ -47,7 +47,7 @@ export const OrderBook = observer(function OrderBook(props: {
     return (
       <div className={side}>
         {list.map((o, index) => (
-          <OrderBookItem key={index} item={o} market={market} />
+          <OrderBookItem key={o.price} item={o} market={market} />
         ))}
       </div>
     );
@@ -96,7 +96,7 @@ export const OrderBook = observer(function OrderBook(props: {
                   <MarketPrice market={market} />
                 </div>
                 {state.side === eSide.buy && renderList(asks, "asks")}
-                {state.side === eSide.sell && renderList(asks, "bids")}
+                {state.side === eSide.sell && renderList(bids, "bids")}
               </>
             )}
           </div>
@@ -117,9 +117,10 @@ const OrderBookItem = observer(function OrderBookItem(props: {
       <div className={"price"}>
         <FormatQuote val={item.price} spec={market.spec} />
       </div>
-      <div className={"size"}>
+
+      <HighLight className={"size"} updateDep={item.size}>
         <FormatBase val={item.size} spec={market.spec} />
-      </div>
+      </HighLight>
       <div className={"accumulateSize"}>
         <FormatBase val={item.accumulateSize} spec={market.spec} />
       </div>
@@ -136,3 +137,46 @@ const MarketPrice = observer(function MarketPrice(props: { market: Market }) {
     </div>
   );
 });
+
+const HighLight = (props: {
+  className: string;
+  updateDep: any;
+  children: any;
+  highLightImmediate?: boolean;
+}) => {
+  const { className, children, updateDep, highLightImmediate } = props;
+  const el = useRef(null as HTMLDivElement);
+
+  const [state, setState] = useState(() => {
+    return {
+      resetAnim() {
+        const element = el.current;
+        // -> removing the class
+        element.classList.remove("new");
+        void element.offsetWidth;
+        element.classList.add("new");
+      }
+    };
+  });
+
+  const [ins] = useState(() => ({
+    onUpdateFunction() {}
+  }));
+
+  useEffect(() => {
+    ins.onUpdateFunction();
+  }, [updateDep]);
+
+  useEffect(() => {
+    if (highLightImmediate) {
+      state.resetAnim();
+    }
+    ins.onUpdateFunction = state.resetAnim;
+  }, []);
+
+  return (
+    <div ref={el} className={`${className} highLight`}>
+      {children}
+    </div>
+  );
+};

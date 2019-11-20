@@ -50,4 +50,44 @@ export class RecentTrade extends BaseResModel<Market> {
 
     this.loadingEnd();
   }
+
+  testAddTrades() {
+    const createTrade = () => {
+      const time = new Date();
+      const trade = {
+        timestamp: time.getTime(),
+        datetime: "2019-11-20T15:54:01.000Z",
+        symbol: this.market.spec.symbol,
+        id: _.uniqueId("tradeId_"),
+        type: "limit",
+        side: "sell",
+        price: 0.01659,
+        amount: 1065 + Math.random() * 300,
+        cost: 17.66835,
+        info: {
+          id: 169799562,
+          price: "0.01659",
+          amount: "1065",
+          taker_side: "ASK",
+          inserted_at: "2019-11-20T15:54:01Z",
+          created_at: "2019-11-20T15:54:01Z"
+        },
+        tick: "plusTick"
+      } as TradeModel;
+      return trade;
+    };
+
+    const createTrades = (): TradeModel[] => {
+      const num = Math.random() * 5;
+      const trades = [];
+      for (let i = 0; i < num; i++) {
+        trades.push(createTrade());
+      }
+      return trades;
+    };
+
+    window.setInterval(() => {
+      this.trades.unshift(...createTrades());
+    }, 1000);
+  }
 }

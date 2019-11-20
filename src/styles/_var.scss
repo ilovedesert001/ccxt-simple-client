@@ -40,6 +40,21 @@ $tip-info-color: rgba(49, 50, 56, 0.5);
   }
 }
 
+@keyframes keyFrame_ListItem_new {
+  //0% {
+  //  background-color: transparent;
+  //}
+
+  //#292929
+
+  30% {
+    background-color: #292929;
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
 @mixin listHoverAnimation {
   animation: keyFrame_ListItem_inactive 180ms linear;
   &:hover {

@@ -39,7 +39,7 @@ const RecentTradesItem = observer(function RecentTradesItem(props: {
   const { trade, market } = props;
 
   return (
-    <div className="TradeHistoryContainer_item">
+    <div className={`TradeHistoryContainer_item new`}>
       <div className="volume">
         <FormatBase val={trade.amount} spec={market.spec} />
       </div>
