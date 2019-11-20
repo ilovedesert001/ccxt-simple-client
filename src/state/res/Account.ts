@@ -4,8 +4,9 @@ import { Exchange } from "./Exchange";
 import { Accounts } from "./Accounts";
 import { Balance } from "./Balance";
 import { OrderModel } from "../../model/models";
-import { AccountOrder } from "./AccountOrder";
+import { AccountOrder, ILsLatestClosedOrder } from "./AccountOrder";
 import { Market } from "./Market";
+import { CommonSubLs } from "../../Util";
 
 export class Account extends BaseResModel<Accounts> {
   constructor(root, parent) {
@@ -92,7 +93,7 @@ export class Account extends BaseResModel<Accounts> {
 
   computeProfitAndRate(market: Market) {
     const accountOrder = this.safeGetAccountOrder(market);
-    const outValue = this.computeOutMoneyByHistory(accountOrder.all);
+    const outValue = this.computeOutMoneyByHistory(accountOrder.palOrders);
     const currentValue = this.computeCurrentValue(market);
     return {
       profit: currentValue - outValue,

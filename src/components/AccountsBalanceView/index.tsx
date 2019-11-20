@@ -69,10 +69,21 @@ export const AccountsView = observer(function AccountsView(props: {
           secret: values.secret
         });
       });
+    },
+
+    activeAccount(account: Account) {
+      uiStates.account = account;
+      accounts.lsLatestAccountSet(account);
     }
   }));
 
-  useEffect(() => {}, []);
+  // Automatic activation of the latest account
+  useEffect(() => {
+    const account = accounts.lsLatestAccountGetFromExchange(exchange);
+    if (account) {
+      state.activeAccount(account);
+    }
+  }, []);
 
   const list = accounts.all.filter(o => o.exchange === exchange);
 
@@ -116,7 +127,7 @@ export const AccountsView = observer(function AccountsView(props: {
               <Tag
                 color="gold"
                 onClick={() => {
-                  uiStates.account = row;
+                  state.activeAccount(row);
                 }}
               >
                 {row.name}

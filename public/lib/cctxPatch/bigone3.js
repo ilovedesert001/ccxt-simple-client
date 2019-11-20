@@ -1,22 +1,14 @@
-import { ExchangeOriginalClass } from "./util";
-import _ from "lodash";
-
-export function init() {
+window.patch_bigone3 = function() {
   const cctx = window.ccxt;
-
   const name = "bigone3";
 
-  const Original: typeof ccxt.Exchange = cctx[name];
+  const Original = cctx[name];
 
-  class Enhanced extends ExchangeOriginalClass {
-    constructor(...args) {
-      super();
-      this["__proto__"] = new Original(...args);
-    }
+  class Enhanced extends Original {
     enhanced = true;
 
     async fetchOrders(...args) {
-      const [symbol, since, limit, params] = args;
+      const [symbol, since, limit = 200, params] = args;
       return Promise.all([
         super.fetchOrders(
           symbol,
@@ -43,7 +35,7 @@ export function init() {
           )
         )
       ]).then(([data1, data2]) => {
-        let orders = [];
+        let orders = data1.concat(data2);
         orders.forEach(o => {
           if (o.price) {
             o.type = "limit";
@@ -56,5 +48,5 @@ export function init() {
     }
   }
 
-  cctx[name] = Enhanced;
-}
+  ccxt[name] = Enhanced;
+};

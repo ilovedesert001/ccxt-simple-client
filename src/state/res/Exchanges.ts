@@ -31,14 +31,14 @@ export class Exchanges extends BaseResModel<AppRootStore> {
     const exchangesNames = [
       "bittrex", // dwad
       "basefex",
-      "bitmex",
-      'coss',
-      'bibox',
-      'huobipro',
-      'okex3',
-      'poloniex',
+      // "bitmex",
+      "coss",
+      "bibox",
+      "huobipro",
+      "okex3",
+      "poloniex",
       // 'bitstamp',
-      'coinbasepro'
+      "coinbasepro"
     ];
 
     ///ccxt.exchanges

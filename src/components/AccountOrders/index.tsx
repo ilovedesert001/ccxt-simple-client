@@ -3,7 +3,7 @@ import { observer, useLocalStore } from "mobx-react-lite";
 import "./index.scss";
 import { OrderModel } from "../../model/models";
 import { UpdatableCard } from "../UpdatableCard";
-import { Tabs } from "antd";
+import { Button, Tabs } from "antd";
 import { FormatTimeAuto, MobTable, Ob } from "../Util";
 import { Account } from "../../state/res/Account";
 import { Market } from "../../state/res/Market";
@@ -34,7 +34,26 @@ export const AccountOrders = observer(function AccountOrders(props: {
         rowKey={"id"}
         columns={[
           {
-            dataIndex: "symbol"
+            dataIndex: "symbol",
+            render(v, row) {
+              let isLatestClosedOrder = row === res.latestClosedOrder;
+              return (
+                <span>
+                  {v}
+
+                  {!isLatestClosedOrder && (
+                    <Button
+                      size={"small"}
+                      onClick={() => {
+                        res.setLatestClosedOrder(row);
+                      }}
+                    >
+                      latest order
+                    </Button>
+                  )}
+                </span>
+              );
+            }
           },
           {
             dataIndex: "timestamp",

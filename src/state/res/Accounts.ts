@@ -5,6 +5,8 @@ import { BaseResModel } from "./Base";
 import { Account } from "./Account";
 import { CommonSubLs } from "../../Util";
 import _ from "lodash";
+import { OrderModel } from "../../model/models";
+import { ILsLatestClosedOrder } from "./AccountOrder";
 
 export class Accounts extends BaseResModel<AppRootStore> {
   accountsMap = observable.map<string, Account>({}, { name: "accountsMap" });
@@ -22,7 +24,7 @@ export class Accounts extends BaseResModel<AppRootStore> {
   @action
   async createAccount(exchange: Exchange, name: string, cctxOption) {
     if (this.accountsMap.get(name)) {
-      console.warn("已经存在此账户，不能重复添加",name);
+      console.warn("已经存在此账户，不能重复添加", name);
     } else {
       const account = new Account(this.store, this);
 
@@ -50,7 +52,7 @@ export class Accounts extends BaseResModel<AppRootStore> {
     const arr = this.lsAccounts.lsGet("list", []) as IAccountLsOption[];
     const a = arr.find(o => o.name === account.name);
     if (a) {
-      console.warn("已经存在",exchangeKey,account);
+      console.warn("已经存在", exchangeKey, account);
     } else {
       arr.push(
         Object.assign(
@@ -87,6 +89,33 @@ export class Accounts extends BaseResModel<AppRootStore> {
         await this.createAccount(exchange, o.name, o.cctxOption);
       }
     }
+  };
+
+  // Store the last activated user
+  lsLatestAccountKey = (exchange: Exchange) => {
+    const lsKey = `${exchange.exchange}`;
+    return lsKey;
+  };
+
+  lsLatestAccountSet = (account: Account) => {
+    const base = this.lsAccounts.lsGet("LatestAccountMap", {});
+    const lsKey = this.lsLatestAccountKey(account.exchange);
+    const lsObj = {
+      accountName: account.name,
+      exchangeName: account.exchange.exchange
+    };
+    base[lsKey] = lsObj;
+    this.lsAccounts.lsSet("LatestAccountMap", base);
+  };
+
+  lsLatestAccountGetFromExchange = (exchange: Exchange): Account => {
+    const base = this.lsAccounts.lsGet("LatestAccountMap", {});
+    const lsKey = this.lsLatestAccountKey(exchange);
+    const lsObj = base[lsKey];
+    if (lsObj) {
+      return this.accountsMap.get(lsObj.accountName);
+    }
+    return null;
   };
 }
 

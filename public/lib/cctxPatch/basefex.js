@@ -1,46 +1,20 @@
-import _ from "lodash";
-import { ExchangeOriginalClass } from "./util";
-
-interface BaseFexMarket {
-  pricePrecision: number;
-  symbol: string;
-  isInverse: boolean;
-  riskStep: number;
-  maxRiskLimit: number;
-  baseCurrency: string;
-  initialMargin: number;
-  quoteCurrency: string;
-  minRiskLimit: number;
-  riskLimit: number;
-  maintenanceMargin: number;
-  enable: boolean;
-  baseName: string;
-  priceStep: number;
-}
-
-export function init() {
+window.patch_basefex = function() {
   const ccxt = window.ccxt;
   const name = "basefex";
-  const Original: typeof ccxt.Exchange = ccxt[name];
-  class Enhanced extends ExchangeOriginalClass {
+  const Original = ccxt[name];
+  class Enhanced extends Original {
     enhanced = true;
-    constructor(...args) {
-      super();
-      this["__proto__"] = new Original(...args);
-    }
     describe() {
       const d = super.describe();
-      console.log("aaa", this);
-      debugger;
       d.api.public.get.push("instruments");
       return d;
     }
 
     //用来转换 symbol
-    static ccxtSymbolToBaseFexMarket = new Map<string, BaseFexMarket>();
-    static baseFexSymbolToCcxtSymbol = new Map<string, string>();
+    static ccxtSymbolToBaseFexMarket = new Map();
+    static baseFexSymbolToCcxtSymbol = new Map();
 
-    castMarket(market: BaseFexMarket, params) {
+    castMarket(market, params) {
       let _base = this.safeString(market, "baseCurrency");
       let _quote = this.safeString(market, "quoteCurrency");
 
@@ -69,7 +43,7 @@ export function init() {
       };
     }
 
-    fetchMarkets(): Promise<ccxt.Market[]> {
+    fetchMarkets() {
       return super.fetchMarkets().then(data => {
         return data;
       });
@@ -85,8 +59,8 @@ export function init() {
     }
 
     async fetchTickers() {
-      let instruments: ccxt.Ticker[] = await this.publicGetInstruments();
-      instruments = instruments.map((instrument: any) => {
+      let instruments = await this.publicGetInstruments();
+      instruments = instruments.map(instrument => {
         const symbol = Enhanced.baseFexSymbolToCcxtSymbol.get(
           instrument.symbol
         );
@@ -113,7 +87,7 @@ export function init() {
           average: undefined, // average price, `(last + open) / 2`
           baseVolume: instrument.volume24hInUsd, // volume of base currency traded for last 24 hours
           quoteVolume: undefined // volume of quote currency traded for last 24 hours
-        } as ccxt.Ticker;
+        };
       });
       return _.keyBy(instruments, "symbol");
     }
@@ -136,4 +110,4 @@ export function init() {
   }
 
   ccxt[name] = Enhanced;
-}
+};

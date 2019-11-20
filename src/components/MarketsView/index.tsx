@@ -5,7 +5,7 @@ import { UpdatableCard } from "../UpdatableCard";
 import { Icon, Tabs } from "antd";
 import { Exchange } from "../../state/res/Exchange";
 import { Market } from "../../state/res/Market";
-import { MobTable } from "../Util";
+import { FormatQuote, MobTable } from "../Util";
 import { useStore } from "../../state";
 import Scrollbars from "react-custom-scrollbars";
 
@@ -37,12 +37,16 @@ export const MarketsView = observer(function MarketsView(props: {
     } else {
       const balances = account.balances.balancesNotZero;
 
-      const markets: Market[] = [];
-      balances.forEach(balance => {
-        markets.push(
-          ...account.exchange.getMarketsByCoinSymbolFilterActive(balance.base)
-        );
-      });
+      const allMarkets = account.exchange.allMarkets;
+      const allQuotes = Array.from(new Set(allMarkets.map(o => o.spec.quote)));
+
+      const balancesBases = balances.map(o => o.base);
+
+      const markets = allMarkets.filter(
+        o =>
+          balancesBases.includes(o.spec.quote) &&
+          balancesBases.includes(o.spec.base)
+      );
 
       return (
         <TabPane tab={<Icon type="bank" />} key={account.name}>
@@ -88,6 +92,7 @@ const MarketsList = observer(function MarketsTable(props: {
       <div className={"MarketsList"}>
         {markets.map(row => (
           <div
+            key={row.spec.symbol}
             className={"MarketsListItem"}
             onClick={() => {
               uiStates.market = row;
@@ -95,7 +100,9 @@ const MarketsList = observer(function MarketsTable(props: {
           >
             <div className="exchangeName">{row.spec.symbol}</div>
             <div className="latestPrice">
-              {row.lastTicker && row.lastTicker.close}
+              {row.lastTicker && (
+                <FormatQuote val={row.lastTicker.close} spec={row.spec} />
+              )}
             </div>
           </div>
         ))}

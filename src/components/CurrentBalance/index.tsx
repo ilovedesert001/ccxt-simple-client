@@ -5,7 +5,13 @@ import { BalanceModel } from "../../model/models";
 import { UpdatableCard } from "../UpdatableCard";
 import Scrollbars from "react-custom-scrollbars";
 import { Badge, Progress } from "antd";
-import { FormatPercentage, FormatValue, Ob } from "../Util";
+import {
+  FormatBase,
+  FormatPercentage,
+  FormatQuote,
+  FormatValue,
+  Ob
+} from "../Util";
 import { Account } from "../../state/res/Account";
 import { Market } from "../../state/res/Market";
 
@@ -44,24 +50,26 @@ export const CurrentBalance = observer(function CurrentBalance(props: {
           <div className={"ProfitSection"}>
             <h3>Profit</h3>
             <div>
-              <FormatValue val={profit} market={market.spec} /> /{" "}
+              <FormatQuote val={profit} spec={market.spec} withUnit />/{" "}
               <FormatPercentage val={rate} />
             </div>
 
             <div className={"profitRow2"}>
               <div>
                 <Badge color="red" text="Cost" />
-                <FormatValue
+                <FormatQuote
                   val={account.computeOutMoneyByHistory(userOrder.all)}
-                  market={market.spec}
+                  spec={market.spec}
+                  withUnit
                 />
               </div>
 
               <div>
                 <Badge color="green" text="Current Value" />
-                <FormatValue
+                <FormatQuote
                   val={account.computeCurrentValue(market)}
-                  market={market.spec}
+                  spec={market.spec}
+                  withUnit
                 />
               </div>
             </div>

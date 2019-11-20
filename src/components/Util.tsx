@@ -127,15 +127,25 @@ export const TickItem = observer(function TickItem(props: { tick: eTickType }) {
   return <div className={`icon ${tick}`}>{icon}</div>;
 });
 
+const splitNumberStringSignificantBit = (numericString: string) => {
+  if (numericString.indexOf(".") > 0) {
+    // const valid = numericString.match(/\d(.*[^0])+/g)[0]
+    // const zero = numericString.substring(valid.length,numericString.length)
+    const valid = numericString;
+    const zero = "";
+    return [valid, zero];
+  } else {
+    return [numericString];
+  }
+};
+
 export const NumberSeparateFormat = observer(
   (props: { num: number; fixed: number }) => {
     const { fixed, num } = props;
 
-    const numFixed = fixed ? num.toFixed(fixed) : String(num);
+    const numericString = accounting.toFixed(num, fixed);
 
-    const valid = String(Number(numFixed));
-    const zero = numFixed.substr(valid.length);
-
+    const [valid, zero = ""] = splitNumberStringSignificantBit(numericString);
     return (
       <span className={"Nf"}>
         {valid}
@@ -145,20 +155,34 @@ export const NumberSeparateFormat = observer(
   }
 );
 
+//Split digital significant bit
+
 export const FormatBase = observer(function FormatBase(props: {
   val: number;
   spec: MarketSpecModel;
+  withUnit?: boolean;
 }) {
-  const { val, spec } = props;
+  const { val, spec, withUnit = false } = props;
   const fixedNum = spec.precision.base || spec.precision.amount;
-  return <NumberSeparateFormat num={val} fixed={fixedNum} />;
+  const unit = spec.quote;
+  return (
+    <span>
+      <NumberSeparateFormat num={val} fixed={fixedNum} /> {withUnit && unit}
+    </span>
+  );
 });
 
 export const FormatQuote = observer(function FormatQuote(props: {
   val: number;
   spec: MarketSpecModel;
+  withUnit?: boolean;
 }) {
-  const { val, spec } = props;
+  const { val, spec, withUnit = false } = props;
   const fixedNum = spec.precision.quote || spec.precision.price;
-  return <NumberSeparateFormat num={val} fixed={fixedNum} />;
+  const unit = spec.quote;
+  return (
+    <span>
+      <NumberSeparateFormat num={val} fixed={fixedNum} /> {withUnit && unit}
+    </span>
+  );
 });

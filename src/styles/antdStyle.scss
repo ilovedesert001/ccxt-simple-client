@@ -22,6 +22,19 @@
 .Nf {
   .invalidSection {
     //color: #dddddd;
-    color: red;
+    color: rgba(128, 128, 128, 0.61);
   }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: white !important;
+}
+
+.ant-badge-status-text {
+  color: white !important;
 }

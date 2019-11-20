@@ -129,5 +129,10 @@ const OrderBookItem = observer(function OrderBookItem(props: {
 
 const MarketPrice = observer(function MarketPrice(props: { market: Market }) {
   const { market } = props;
-  return <div>{market.lastPrice}</div>;
+  return (
+    <div>
+      {" "}
+      <FormatQuote val={market.lastPrice} spec={market.spec} />
+    </div>
+  );
 });

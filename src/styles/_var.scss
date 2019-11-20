@@ -11,9 +11,6 @@ $main-sell-color: #e18284;
 
 $tip-info-color: rgba(49, 50, 56, 0.5);
 
-
-
-
 //animations
 
 @keyframes keyFrame_ListItem_active {
@@ -34,15 +31,23 @@ $tip-info-color: rgba(49, 50, 56, 0.5);
   }
 }
 
-
-@mixin listHoverAnimation {
-
-  animation:keyFrame_ListItem_inactive 180ms linear;
-  &:hover,
-  &:active {
-    animation:keyFrame_ListItem_active 100ms linear;
-    background-color: #3a444d;
+@keyframes keyFrame_ListItem_onClick {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.4;
   }
 }
 
-
+@mixin listHoverAnimation {
+  animation: keyFrame_ListItem_inactive 180ms linear;
+  &:hover {
+    animation: keyFrame_ListItem_active 100ms linear;
+    background-color: #3a444d;
+  }
+  &:active {
+    animation: keyFrame_ListItem_onClick 100ms linear;
+    opacity: 0.4;
+  }
+}

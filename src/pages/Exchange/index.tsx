@@ -13,10 +13,9 @@ export const ExchangePage = observer(function ExchangePage() {
 
   const exchange = exchanges.exchangesMap.get(exchangeKey);
 
-  useEffect(() => {
+  if (exchange) {
     uiStates.changeExchange(exchange);
-  }, [exchange]);
-
+  }
   return (
     <PageStruct>
       {exchange ? (
