@@ -31,10 +31,10 @@ export class Market extends BaseResModel<Exchange> {
     return this.recentTrades.trades[0];
   }
 
-  //市场价
+  //market price
   @computed get lastPrice() {
-    if (this.lastTrade) {
-      return this.lastTrade.price;
+    if (this.lastTicker) {
+      return this.lastTicker.close;
     } else {
       return 0;
     }

@@ -234,6 +234,8 @@ const UserAsset = observer(function UserAsset(props: { account: Account }) {
         title={<div>Balances</div>}
         updatableRes={account.balances}
       >
+        <h4>USDT Value : {account.balances.getAllBalanceValue("USDT")}</h4>
+
         <MobTable<BalanceModel>
           size={"small"}
           dataSource={list}

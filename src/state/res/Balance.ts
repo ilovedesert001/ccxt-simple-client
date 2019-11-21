@@ -15,8 +15,8 @@ export class Balance extends BaseResModel<Account> {
   async updateRes() {
     this.loadingStart();
 
-    let balances =  await this.ccxtIns.fetchBalance();
-    _.each(balances, (balance : BalanceModel, key) => {
+    let balances = await this.ccxtIns.fetchBalance();
+    _.each(balances, (balance: BalanceModel, key) => {
       balance.base = key;
     });
     delete balances["info"];
@@ -37,5 +37,23 @@ export class Balance extends BaseResModel<Account> {
     return this.balancesAll.filter(o => {
       return o.total > 0.0001;
     });
+  }
+
+  getAllBalanceValue(quote: string) {
+    const exchange = this.parent.exchange;
+    let sum = 0;
+    this.balancesNotZero.forEach(balance => {
+      if (balance.base === quote) {
+        sum += balance.total;
+      } else {
+        const values = exchange.getQuoteValue(balance);
+        values
+          .filter(o => o.quote === quote)
+          .forEach(o => {
+            sum += o.value;
+          });
+      }
+    });
+    return sum;
   }
 }

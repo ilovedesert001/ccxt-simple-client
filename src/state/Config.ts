@@ -12,6 +12,26 @@ export class Config extends AppSubStore<AppRootStore> {
     super(root, parent);
     this.ls = BrowserStore;
   }
+
+  // Used to merge display total assets
+  baseCurrencies = new Map([
+    [
+      "USDT",
+      {
+        name: "USDT",
+        precision: 2,
+        minValue: 0.1
+      }
+    ],
+    [
+      "BTC",
+      {
+        name: "BTC",
+        precision: 6,
+        minValue: 0.001 // Assets less than 0.001 BTC will be hidden
+      }
+    ]
+  ]);
 }
 
 export type LocalStorageType = {

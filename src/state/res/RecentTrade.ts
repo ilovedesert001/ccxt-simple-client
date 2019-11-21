@@ -46,6 +46,10 @@ export class RecentTrade extends BaseResModel<Market> {
         o2.tick = tick;
       });
       this.trades = _.orderBy(trades, "timestamp", ["desc"]);
+
+      if (this.market.lastTicker) {
+        this.market.lastTicker.close = this.trades[0].price;
+      }
     });
 
     this.loadingEnd();

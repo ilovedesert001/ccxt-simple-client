@@ -3,7 +3,7 @@ import { BaseResModel } from "./Base";
 import { Market } from "./Market";
 import { Exchanges } from "./Exchanges";
 import _ from "lodash";
-import { TickerModel } from "../../model/models";
+import { BalanceModel, TickerModel } from "../../model/models";
 
 export class Exchange extends BaseResModel<Exchanges> {
   marketsMap = observable.map<string, Market>({}, { name: "marketsMap" });
@@ -69,8 +69,6 @@ export class Exchange extends BaseResModel<Exchanges> {
     });
   }
 
-
-
   @action
   async createCCXTIns() {
     this.ccxtIns = await new window.ccxt[this.exchange](this.createCCXTOption);
@@ -78,6 +76,24 @@ export class Exchange extends BaseResModel<Exchanges> {
 
   @computed get allMarkets() {
     return Array.from(this.marketsMap.values());
+  }
+
+  @computed get allEnabledMarkets() {
+    return this.allMarkets.filter(o => o.spec.active);
+  }
+
+  getQuoteValue(balance: BalanceModel) {
+    const markets = this.getMarketsByCoinSymbolFilterActive(balance.base);
+    return markets
+      .filter(o => o.lastPrice && o.spec.base === balance.base)
+      .map(market => {
+        return {
+          symbol: market.spec.symbol,
+          quote: market.spec.quote,
+          base: balance.base,
+          value: balance.total * market.lastPrice
+        };
+      });
   }
 
   getSnapShoot(): this {
