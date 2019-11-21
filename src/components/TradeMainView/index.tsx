@@ -9,6 +9,7 @@ import { useStore } from "../../state";
 import { Exchange } from "../../state/res/Exchange";
 import { AccountOrders } from "../AccountOrders";
 import { AccountsBalanceView } from "../AccountsBalanceView";
+import { TradingView } from "../TradingView";
 
 export const TradeMainView = observer(function TradeMainView(props: {
   exchange: Exchange;
@@ -45,6 +46,17 @@ export const TradeMainView = observer(function TradeMainView(props: {
           <AccountsBalanceView exchange={exchange} />
         </Col>
       </Row>
+
+      {uiStates.market && (
+        <Row>
+          <Col span={24}>
+            <TradingView
+              key={uiStates.market.spec.symbol}
+              market={uiStates.market}
+            />
+          </Col>
+        </Row>
+      )}
 
       <Row>
         <Col span={24}>

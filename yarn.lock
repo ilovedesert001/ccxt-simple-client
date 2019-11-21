@@ -6440,6 +6440,11 @@ levn@^0.3.0, levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
+lightweight-charts@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/lightweight-charts/-/lightweight-charts-1.1.0.tgz#000b1a454053dd8ff9c305c4a590347195795e7b"
+  integrity sha512-bKiEGsneENFsOpKRtT50yBp9Gc5DD0htyC7yfvENzOG8q4LblYZA4eJ92F0nMcm6M5op88kRKGGk/BssW2L/1w==
+
 load-json-file@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/load-json-file/-/load-json-file-1.1.0.tgz#956905708d58b4bab4c2261b04f59f31c99374c0"

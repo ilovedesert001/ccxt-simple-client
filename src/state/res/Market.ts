@@ -4,10 +4,12 @@ import { Exchange } from "./Exchange";
 import { MarketSpecModel, TickerModel } from "../../model/models";
 import { RecentTrade } from "./RecentTrade";
 import { OrderBook } from "./OrderBook";
+import { Candlestick } from "./market/Candlestick";
 
 export class Market extends BaseResModel<Exchange> {
-  @observable recentTrades: RecentTrade; //近期交易
-  @observable orderBook: OrderBook; //买卖盘
+  @observable recentTrades: RecentTrade;
+  @observable orderBook: OrderBook;
+  @observable candlestick: Candlestick;
   @observable spec: MarketSpecModel = null;
 
   @observable lastTicker = null as TickerModel;
@@ -17,6 +19,7 @@ export class Market extends BaseResModel<Exchange> {
     this.spec = spec;
     this.recentTrades = new RecentTrade(root, this);
     this.orderBook = new OrderBook(root, this);
+    this.candlestick = new Candlestick(root, this);
   }
 
   @action
@@ -24,6 +27,7 @@ export class Market extends BaseResModel<Exchange> {
     this.loadingStart();
     await this.recentTrades.updateRes();
     await this.orderBook.updateRes();
+    await this.candlestick.updateRes();
     this.loadingEnd();
   }
 

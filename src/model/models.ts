@@ -31,3 +31,12 @@ export interface OrderBookModel {
   accumulateSize: number; //累计（吃到这里所需要的数量）
   // side:eSide;
 }
+
+export interface OHLCVModel {
+  time: number;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume: number;
+}
