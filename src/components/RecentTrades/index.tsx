@@ -7,6 +7,7 @@ import { eSide, eTickType, TradeModel } from "../../model/models";
 import { UpdatableCard } from "../UpdatableCard";
 import Scrollbars from "react-custom-scrollbars";
 import { Market } from "../../state/res/Market";
+import { AutoSizeScrollBar } from "../AutoSizeScrollBar";
 
 export const RecentTrades = observer(function RecentTrades(props: {
   market: Market;
@@ -21,13 +22,13 @@ export const RecentTrades = observer(function RecentTrades(props: {
       className={"RecentTrades"}
       updatableRes={res}
     >
-      <Scrollbars style={{ height: 600 }} autoHide={true}>
+      <AutoSizeScrollBar>
         <div className={"TradeHistoryContainer"}>
           {list.map(o => (
             <RecentTradesItem key={o.id} trade={o} market={market} />
           ))}
         </div>
-      </Scrollbars>
+      </AutoSizeScrollBar>
     </UpdatableCard>
   );
 });

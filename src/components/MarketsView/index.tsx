@@ -8,6 +8,7 @@ import { Market } from "../../state/res/Market";
 import { FormatQuote, MobTable } from "../Util";
 import { useStore } from "../../state";
 import Scrollbars from "react-custom-scrollbars";
+import { AutoSizeScrollBar } from "../AutoSizeScrollBar";
 
 const { TabPane } = Tabs;
 
@@ -88,25 +89,27 @@ const MarketsList = observer(function MarketsTable(props: {
   const { uiStates } = useStore();
 
   return (
-    <Scrollbars style={{ height: 550 }} autoHide={true}>
-      <div className={"MarketsList"}>
-        {markets.map(row => (
-          <div
-            key={row.spec.symbol}
-            className={"MarketsListItem"}
-            onClick={() => {
-              uiStates.market = row;
-            }}
-          >
-            <div className="exchangeName">{row.spec.symbol}</div>
-            <div className="latestPrice">
-              {row.lastTicker && (
-                <FormatQuote val={row.lastTicker.close} spec={row.spec} />
-              )}
+    <div style={{ height: "100%" }}>
+      <AutoSizeScrollBar minWidth={300}>
+        <div className={"MarketsList"}>
+          {markets.map(row => (
+            <div
+              key={row.spec.symbol}
+              className={"MarketsListItem"}
+              onClick={() => {
+                uiStates.market = row;
+              }}
+            >
+              <div className="exchangeName">{row.spec.symbol}</div>
+              <div className="latestPrice">
+                {row.lastTicker && (
+                  <FormatQuote val={row.lastTicker.close} spec={row.spec} />
+                )}
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
-    </Scrollbars>
+          ))}
+        </div>
+      </AutoSizeScrollBar>
+    </div>
   );
 });

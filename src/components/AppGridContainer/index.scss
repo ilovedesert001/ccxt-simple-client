@@ -1,0 +1,78 @@
+@import "../../styles/var";
+
+.AppGridContainer {
+  //background: white;
+  //color: black;
+
+  .react-grid-item {
+    //background-color: $main-bg-color;
+    background-color: gray;
+    border: 1px solid black;
+    color: white;
+    overflow: auto;
+
+    //transform: unset !important;
+
+    > .react-resizable-handle::after {
+      border-color: white;
+    }
+  }
+
+  .xxxx {
+    height: 100%;
+    background-color: blue;
+    display: flex;
+    flex-direction: column;
+
+    .b1 {
+      background-color: red;
+    }
+
+    .b2 {
+      background-color: yellow;
+      color: black;
+      flex: 0 0 50px;
+      overflow: hidden;
+    }
+  }
+
+  .ant-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .ant-card-head {
+      cursor: pointer;
+    }
+
+    .ant-card-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+
+      > .ant-tabs {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+
+        .ant-tabs-bar {
+        }
+
+        .ant-tabs-content {
+          flex: 1;
+          //display: flex;
+          //flex-direction: column;
+
+          .ant-tabs-tabpane {
+            height: 100%;
+          }
+        }
+      }
+    }
+  }
+
+  .ThumbStyle {
+    background-color: #f4eaea6b;
+    border-radius: 14px;
+  }
+}

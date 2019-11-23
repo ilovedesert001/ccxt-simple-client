@@ -9,7 +9,7 @@ import { useStore } from "../../state";
 import { Exchange } from "../../state/res/Exchange";
 import { AccountOrders } from "../AccountOrders";
 import { AccountsBalanceView } from "../AccountsBalanceView";
-import { TradingView } from "../TradingView";
+import { AppGridContainer } from "../AppGridContainer";
 
 export const TradeMainView = observer(function TradeMainView(props: {
   exchange: Exchange;
@@ -20,6 +20,8 @@ export const TradeMainView = observer(function TradeMainView(props: {
 
   return (
     <div className={"TradeMainView"}>
+      <AppGridContainer />
+
       <Row>
         <Col md={6} sm={12} xs={24}>
           <MarketsView exchange={exchange} />

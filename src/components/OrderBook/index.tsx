@@ -8,12 +8,16 @@ import _ from "lodash";
 import { Button } from "antd";
 import { Market } from "../../state/res/Market";
 import { FormatBase, FormatQuote, NumberSeparateFormat } from "../Util";
+import { AutoSizeScrollBar } from "../AutoSizeScrollBar";
+import { useMeasure } from "react-use";
 
 export const OrderBook = observer(function OrderBook(props: {
   market: Market;
 }) {
   const { market } = props;
   const res = market.orderBook;
+
+  const [ref, size] = useMeasure();
 
   const state = useLocalStore(() => ({
     showNum: 14,
@@ -38,12 +42,23 @@ export const OrderBook = observer(function OrderBook(props: {
 
     setSide(side: eSide) {
       state.side = side;
-    }
+    },
+
+    setShowNum: _.throttle((num: number) => {
+      state.showNum = num;
+    }, 500)
   }));
+
+  useEffect(() => {
+    console.log("AAA", size.height);
+    state.setShowNum(Math.floor(size.height / 43));
+  }, [size.height]);
 
   const { asks, bids } = state;
 
   const renderList = (list: OrderBookModel[], side: string) => {
+    // return  <div>AA</div>
+
     return (
       <div className={side}>
         {list.map((o, index) => (
@@ -59,7 +74,7 @@ export const OrderBook = observer(function OrderBook(props: {
       className={"OrderBook"}
       updatableRes={res}
     >
-      <Scrollbars style={{ height: 600 }} autoHide={true}>
+      <div style={{ height: "100%" }}>
         <div className={"OrderBookContainer"}>
           <div className="OrderBookInnerHeader">
             <div className="sideBtns">
@@ -80,28 +95,29 @@ export const OrderBook = observer(function OrderBook(props: {
               />
             </div>
           </div>
-
-          <div className="centeredContent">
-            {state.side === eSide.both ? (
-              <>
-                {renderList(asks, "asks")}
-                <div className={"MarketPrice"}>
-                  <MarketPrice market={market} />
-                </div>
-                {renderList(bids, "bids")}
-              </>
-            ) : (
-              <>
-                <div className={"MarketPrice"}>
-                  <MarketPrice market={market} />
-                </div>
-                {state.side === eSide.buy && renderList(asks, "asks")}
-                {state.side === eSide.sell && renderList(bids, "bids")}
-              </>
-            )}
-          </div>
+          {state.side === eSide.both ? (
+            <div ref={ref} className="centeredContent">
+              {renderList(asks, "asks")}
+              <div className={"MarketPrice"}>
+                <MarketPrice market={market} />
+              </div>
+              {renderList(bids, "bids")}
+            </div>
+          ) : (
+            <div className={"sideContent"}>
+              <div className={"MarketPrice"}>
+                <MarketPrice market={market} />
+              </div>
+              <div className={"sideContentList"}>
+                <AutoSizeScrollBar>
+                  {state.side === eSide.buy && renderList(asks, "asks")}
+                  {state.side === eSide.sell && renderList(bids, "bids")}
+                </AutoSizeScrollBar>
+              </div>
+            </div>
+          )}
         </div>
-      </Scrollbars>
+      </div>
     </UpdatableCard>
   );
 });
