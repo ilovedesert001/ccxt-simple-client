@@ -20,7 +20,7 @@ export class Candlestick extends BaseResModel<Market> {
     const market = this.market;
     const arr = await this.ccxtIns.fetchOHLCV(
       market.spec.symbol,
-      "1m",
+      "1d",
       null,
       500
     );

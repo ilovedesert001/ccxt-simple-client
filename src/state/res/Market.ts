@@ -27,7 +27,7 @@ export class Market extends BaseResModel<Exchange> {
     this.loadingStart();
     await this.recentTrades.updateRes();
     await this.orderBook.updateRes();
-    await this.candlestick.updateRes();
+    // await this.candlestick.updateRes();
     this.loadingEnd();
   }
 

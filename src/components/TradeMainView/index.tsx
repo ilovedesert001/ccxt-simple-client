@@ -47,16 +47,16 @@ export const TradeMainView = observer(function TradeMainView(props: {
         </Col>
       </Row>
 
-      {uiStates.market && (
-        <Row>
-          <Col span={24}>
-            <TradingView
-              key={uiStates.market.spec.symbol}
-              market={uiStates.market}
-            />
-          </Col>
-        </Row>
-      )}
+      {/*{uiStates.market && (*/}
+      {/*  <Row>*/}
+      {/*    <Col span={24}>*/}
+      {/*      <TradingView*/}
+      {/*        key={uiStates.market.spec.symbol}*/}
+      {/*        market={uiStates.market}*/}
+      {/*      />*/}
+      {/*    </Col>*/}
+      {/*  </Row>*/}
+      {/*)}*/}
 
       <Row>
         <Col span={24}>
