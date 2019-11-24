@@ -25,6 +25,9 @@ import { useMeasure, useSize } from "react-use";
 import { AutoSizeScrollBar } from "../AutoSizeScrollBar";
 import { RecentTrades } from "../RecentTrades";
 import { OrderBook } from "../OrderBook";
+import { AccountsView } from "../AccountsView";
+import { CurrentBalance } from "../CurrentBalance";
+import { AccountOrders } from "../AccountOrders";
 
 const ReactGridLayout = WidthProvider(RGL);
 
@@ -57,7 +60,11 @@ export const AppGridContainer = observer(function AppGridContainer(props: {}) {
     MarketsView: <BlockMarketsView />,
     OrderBook: <BlockOrderBook />,
     RecentTrades: <BlockRecentTrades />,
-    xxx: <BlockXXX />
+    AccountsView: <BlockAccountsView />,
+    CurrentBalance: <BlockCurrentBalance />,
+    AccountOrders: <BlockAccountOrders />
+
+    // xxx: <BlockXXX />
   };
 
   const safeGetComponent = key => {
@@ -106,10 +113,21 @@ export const AppGridContainer = observer(function AppGridContainer(props: {}) {
 });
 
 const defaultLayout = [
-  { w: 6, h: 15, x: 0, y: 18, i: "xxx", moved: false, static: false },
-  { w: 6, h: 18, x: 0, y: 0, i: "MarketsView", moved: false, static: false },
-  { w: 6, h: 33, x: 6, y: 0, i: "OrderBook", moved: false, static: false },
-  { w: 6, h: 33, x: 12, y: 0, i: "RecentTrades", moved: false, static: false }
+  { w: 6, h: 15, x: 0, y: 62, i: "xxx", moved: false, static: false },
+  { w: 6, h: 21, x: 0, y: 0, i: "MarketsView", moved: false, static: false },
+  { w: 6, h: 21, x: 6, y: 0, i: "OrderBook", moved: false, static: false },
+  { w: 6, h: 21, x: 12, y: 0, i: "RecentTrades", moved: false, static: false },
+  { w: 6, h: 22, x: 0, y: 21, i: "AccountsView", moved: false, static: false },
+  {
+    w: 6,
+    h: 22,
+    x: 6,
+    y: 21,
+    i: "CurrentBalance",
+    moved: false,
+    static: false
+  },
+  { w: 20, h: 19, x: 0, y: 43, i: "AccountOrders", moved: false, static: false }
 ];
 
 const BlockMarketsView = observer(function BlockMarketsView() {
@@ -123,13 +141,19 @@ const BlockMarketsView = observer(function BlockMarketsView() {
   );
 });
 
+const NeedMarket = <div>Need to select a market</div>;
+
 const BlockRecentTrades = observer(function BlockRecentTrades() {
   const { uiStates } = useStore();
   const { market } = uiStates;
 
   return (
     <div style={{ height: "100%" }}>
-      {market && <RecentTrades key={market.spec.symbol} market={market} />}
+      {market ? (
+        <RecentTrades key={market.spec.symbol} market={market} />
+      ) : (
+        NeedMarket
+      )}
     </div>
   );
 });
@@ -140,8 +164,63 @@ const BlockOrderBook = observer(function BlockOrderBook(props) {
 
   return (
     <div style={{ height: "100%" }}>
-      {market && (
+      {market ? (
         <OrderBook key={uiStates.market.spec.symbol} market={uiStates.market} />
+      ) : (
+        NeedMarket
+      )}
+    </div>
+  );
+});
+
+const BlockAccountsView = observer(function BlockAccountsView(props) {
+  const { uiStates } = useStore();
+  const { exchange } = uiStates;
+
+  return (
+    <div style={{ height: "100%" }}>
+      {exchange ? (
+        <AccountsView key={exchange.exchange} exchange={exchange} />
+      ) : (
+        <div>AccountsView</div>
+      )}
+    </div>
+  );
+});
+
+const BlockCurrentBalance = observer(function BlockCurrentBalance(props) {
+  const { uiStates } = useStore();
+  const { exchange, market, account } = uiStates;
+
+  return (
+    <div style={{ height: "100%" }}>
+      {market && account ? (
+        <CurrentBalance
+          key={account.name + market.spec.symbol}
+          market={market}
+          account={account}
+        />
+      ) : (
+        <div>Balance</div>
+      )}
+    </div>
+  );
+});
+
+const BlockAccountOrders = observer(function BlockAccountOrders(props) {
+  const { uiStates } = useStore();
+  const { exchange, market, account } = uiStates;
+
+  return (
+    <div style={{ height: "100%" }}>
+      {market && account ? (
+        <AccountOrders
+          key={uiStates.market.spec.symbol + uiStates.account.name}
+          account={uiStates.account}
+          market={uiStates.market}
+        />
+      ) : (
+        <div>account order</div>
       )}
     </div>
   );

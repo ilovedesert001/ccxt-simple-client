@@ -8,34 +8,9 @@ import { Exchange } from "../../state/res/Exchange";
 import { WrappedFormUtils } from "antd/lib/form/Form";
 import { Account } from "../../state/res/Account";
 import { BalanceModel } from "../../model/models";
-import { CurrentBalance } from "../CurrentBalance";
 import { MobTable } from "../Util";
 
 const { TabPane } = Tabs;
-
-export const AccountsBalanceView = observer(
-  function AccountsBalanceView(props: { exchange: Exchange }) {
-    const { exchange } = props;
-
-    const { uiStates } = useStore();
-
-    return (
-      <Tabs defaultActiveKey="1" onChange={() => {}}>
-        <TabPane tab="Accounts" key="1">
-          <AccountsView exchange={exchange} />
-        </TabPane>
-        <TabPane tab="Balance" key="2">
-          {uiStates.market && uiStates.account && (
-            <CurrentBalance
-              account={uiStates.account}
-              market={uiStates.market}
-            />
-          )}
-        </TabPane>
-      </Tabs>
-    );
-  }
-);
 
 export const AccountsView = observer(function AccountsView(props: {
   exchange: Exchange;

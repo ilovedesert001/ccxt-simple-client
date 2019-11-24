@@ -1,5 +1,5 @@
 import { observer, useLocalStore } from "mobx-react-lite";
-import React, { useEffect, useRef } from "react";
+import React, { MutableRefObject, useEffect, useRef, useState } from "react";
 import _ from "lodash";
 import Scrollbars from "react-custom-scrollbars";
 import ResizeObserver from "@juggle/resize-observer";
@@ -16,14 +16,20 @@ export const AutoSizeScrollBar = observer(function AutoSizeScrollBar(props: {
     width: 10,
     height: 10,
 
-    setWH: _.throttle((w, h) => {
+    setWH: _.debounce((w, h) => {
       if (w) {
         state.width = w;
       }
       if (h) {
         state.height = h;
       }
-    }, 100)
+
+      console.log("设置WH");
+
+      state.parentResizing = false;
+    }, 300),
+
+    parentResizing: false
   }));
 
   useEffect(() => {
@@ -34,7 +40,7 @@ export const AutoSizeScrollBar = observer(function AutoSizeScrollBar(props: {
 
       const width = e1.contentRect.width;
       const height = e1.contentRect.height;
-
+      state.parentResizing = true;
       state.setWH(width, height);
     });
 
@@ -56,7 +62,14 @@ export const AutoSizeScrollBar = observer(function AutoSizeScrollBar(props: {
       renderThumbVertical={() => <div className={"ThumbStyle"} />}
       renderThumbHorizontal={() => <div className={"ThumbStyle"} />}
     >
-      <div ref={el} style={{ width: "100%", height: "100%" }}>
+      <div
+        ref={el}
+        style={{
+          width: "100%",
+          height: "100%",
+          display: state.parentResizing ? "none" : "block"
+        }}
+      >
         {props.children}
       </div>
     </Scrollbars>
