@@ -97,7 +97,7 @@ const MarketsList = observer(function MarketsTable(props: {
               key={row.spec.symbol}
               className={"MarketsListItem"}
               onClick={() => {
-                uiStates.market = row;
+                uiStates.changeMarket(row);
               }}
             >
               <div className="exchangeName">{row.spec.symbol}</div>

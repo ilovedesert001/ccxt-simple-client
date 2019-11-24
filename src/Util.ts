@@ -1,15 +1,17 @@
-export function forTwo<T = any>(arr: T[], handle: (current: T, next: T) => void) {
+export function forTwo<T = any>(
+  arr: T[],
+  handle: (current: T, next: T) => void
+) {
   if (arr.length < 2) {
     return;
   }
   const len = arr.length - 1;
   for (let i = 0; i < len; i++) {
-    const current = arr[i]
+    const current = arr[i];
     const next = arr[i + 1];
-    handle(current, next)
+    handle(current, next);
   }
 }
-
 
 //把 ls 的一个字段当做 map 来用
 export class CommonSubLs {
@@ -21,10 +23,10 @@ export class CommonSubLs {
     this.ls = localStorageManager;
   }
 
-  lsGet = (k: string, dv) => {
+  lsGet = (k: string, dv?: any) => {
     const root = this.ls.get(this.rootKey, {});
     let item = root[k];
-    if (item === undefined) {
+    if (item === undefined && dv !== undefined) {
       item = dv;
     }
     return item;

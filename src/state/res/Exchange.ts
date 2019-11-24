@@ -1,17 +1,35 @@
-import { action, computed, observable, runInAction } from "mobx";
+import {
+  action,
+  computed,
+  observable,
+  reaction,
+  runInAction,
+  when
+} from "mobx";
 import { BaseResModel } from "./Base";
 import { Market } from "./Market";
 import { Exchanges } from "./Exchanges";
 import _ from "lodash";
 import { BalanceModel, TickerModel } from "../../model/models";
+import { CommonSubLs } from "../../Util";
+import { Account } from "./Account";
 
 export class Exchange extends BaseResModel<Exchanges> {
   marketsMap = observable.map<string, Market>({}, { name: "marketsMap" });
 
-  constructor(root, parent) {
+  constructor(root, parent, exchange: string) {
     super(root, parent);
+    this.exchange = exchange;
 
-    window["bigone"] = this;
+    {
+      //set ui market
+      when(
+        () => this.marketsMap.size > 0,
+        () => {
+          this.store.uiStates.market = this.lsLatestMarketGet();
+        }
+      );
+    }
   }
 
   @observable ccxtIns = null as ccxt.Exchange;
@@ -95,6 +113,24 @@ export class Exchange extends BaseResModel<Exchanges> {
         };
       });
   }
+
+  lsExchange = new CommonSubLs(
+    this.store.config.ls,
+    `exchange_${this.exchange}`
+  );
+
+  lsLatestMarketSet = (market: Market) => {
+    this.lsExchange.lsSet("latestMarketSymbol", market.spec.symbol);
+  };
+  lsLatestMarketSymbolGet = () => {
+    return this.lsExchange.lsGet("latestMarketSymbol");
+  };
+
+  lsLatestMarketGet = () => {
+    const symbol = this.lsLatestMarketSymbolGet();
+    const market = this.marketsMap.get(symbol);
+    return market;
+  };
 
   getSnapShoot(): this {
     const obj = super.getSnapShoot();

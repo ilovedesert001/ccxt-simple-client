@@ -17,4 +17,9 @@ export class UiStates extends AppSubStore<AppRootStore> {
     this.market = null;
     this.account = null;
   }
+
+  @action changeMarket(market: Market) {
+    this.market = market;
+    this.exchange.lsLatestMarketSet(market);
+  }
 }
