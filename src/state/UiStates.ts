@@ -1,9 +1,9 @@
-import { AppSubStore } from "./AppSubStore";
-import { AppRootStore } from "./AppRootStore";
-import { action, observable } from "mobx";
-import { Exchange } from "./res/Exchange";
-import { Market } from "./res/Market";
-import { Account } from "./res/Account";
+import {AppSubStore} from "./AppSubStore";
+import {AppRootStore} from "./AppRootStore";
+import {action, observable} from "mobx";
+import {Exchange} from "./res/Exchange";
+import {Market} from "./res/Market";
+import {Account} from "./res/Account";
 
 export class UiStates extends AppSubStore<AppRootStore> {
   @observable exchange: Exchange = null;

@@ -1,13 +1,11 @@
 import React from "react";
-import { observer } from "mobx-react-lite";
-import { FormatBase, FormatQuote, FormatTimeAuto, TickItem } from "../Util";
-import { Icon } from "antd";
+import {observer} from "mobx-react-lite";
+import {FormatBase, FormatQuote, FormatTimeAuto, TickItem} from "../Util";
 import "./index.scss";
-import { eSide, eTickType, TradeModel } from "../../model/models";
-import { UpdatableCard } from "../UpdatableCard";
-import Scrollbars from "react-custom-scrollbars";
-import { Market } from "../../state/res/Market";
-import { AutoSizeScrollBar } from "../AutoSizeScrollBar";
+import {TradeModel} from "../../model/models";
+import {UpdatableCard} from "../UpdatableCard";
+import {Market} from "../../state/res/Market";
+import {AutoSizeScrollBar} from "../AutoSizeScrollBar";
 
 export const RecentTrades = observer(function RecentTrades(props: {
   market: Market;

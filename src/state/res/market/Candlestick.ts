@@ -1,7 +1,7 @@
-import { action, observable, runInAction } from "mobx";
-import { BaseResModel } from "../Base";
-import { Market } from "../Market";
-import { OHLCVModel } from "../../../model/models";
+import {action, observable, runInAction} from "mobx";
+import {BaseResModel} from "../Base";
+import {Market} from "../Market";
+import {OHLCVModel} from "../../../model/models";
 
 export class Candlestick extends BaseResModel<Market> {
   get market() {

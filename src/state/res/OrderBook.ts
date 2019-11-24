@@ -1,8 +1,7 @@
 import { action, observable } from "mobx";
 import { BaseResModel } from "./Base";
-import { OrderBookModel, TradeModel } from "../../model/models";
+import { OrderBookModel } from "../../model/models";
 import { Market } from "./Market";
-import _ from "lodash";
 
 export class OrderBook extends BaseResModel<Market> {
   get market() {

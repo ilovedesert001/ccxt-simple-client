@@ -1,12 +1,12 @@
 import React from "react";
-import { observer, useLocalStore } from "mobx-react-lite";
+import {observer, useLocalStore} from "mobx-react-lite";
 import "./index.scss";
-import { OrderModel } from "../../model/models";
-import { UpdatableCard } from "../UpdatableCard";
-import { Button, Tabs } from "antd";
-import { FormatTimeAuto, MobTable, Ob } from "../Util";
-import { Account } from "../../state/res/Account";
-import { Market } from "../../state/res/Market";
+import {OrderModel} from "../../model/models";
+import {UpdatableCard} from "../UpdatableCard";
+import {Button, Tabs} from "antd";
+import {FormatTimeAuto, MobTable, Ob} from "../Util";
+import {Account} from "../../state/res/Account";
+import {Market} from "../../state/res/Market";
 
 const TabPane = Tabs.TabPane;
 

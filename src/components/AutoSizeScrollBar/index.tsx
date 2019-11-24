@@ -1,5 +1,5 @@
 import { observer, useLocalStore } from "mobx-react-lite";
-import React, { MutableRefObject, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import _ from "lodash";
 import Scrollbars from "react-custom-scrollbars";
 import ResizeObserver from "@juggle/resize-observer";

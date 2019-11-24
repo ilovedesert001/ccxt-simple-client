@@ -1,19 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import { observer, useLocalStore } from "mobx-react-lite";
 import "./index.scss";
-import { BalanceModel } from "../../model/models";
-import { UpdatableCard } from "../UpdatableCard";
-import Scrollbars from "react-custom-scrollbars";
-import { Badge, Card, Col, Progress } from "antd";
-import {
-  FormatBase,
-  FormatPercentage,
-  FormatQuote,
-  FormatValue,
-  Ob
-} from "../Util";
-import { Account } from "../../state/res/Account";
-import { Market } from "../../state/res/Market";
+import { Card } from "antd";
 import { toJS } from "mobx";
 import _ from "lodash";
 import { CommonSubLs } from "../../Util";
@@ -21,7 +9,6 @@ import { useStore } from "../../state";
 import { MarketsView } from "../MarketsView";
 
 import RGL, { WidthProvider } from "react-grid-layout";
-import { useMeasure, useSize } from "react-use";
 import { AutoSizeScrollBar } from "../AutoSizeScrollBar";
 import { RecentTrades } from "../RecentTrades";
 import { OrderBook } from "../OrderBook";

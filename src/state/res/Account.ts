@@ -4,9 +4,8 @@ import { Exchange } from "./Exchange";
 import { Accounts } from "./Accounts";
 import { Balance } from "./Balance";
 import { OrderModel } from "../../model/models";
-import { AccountOrder, ILsLatestClosedOrder } from "./AccountOrder";
+import { AccountOrder } from "./AccountOrder";
 import { Market } from "./Market";
-import { CommonSubLs } from "../../Util";
 
 export class Account extends BaseResModel<Accounts> {
   constructor(root, parent) {

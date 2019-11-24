@@ -1,14 +1,13 @@
 import React from "react";
-import { observer, useLocalStore } from "mobx-react-lite";
+import {observer, useLocalStore} from "mobx-react-lite";
 import "./index.scss";
-import { UpdatableCard } from "../UpdatableCard";
-import { Icon, Tabs } from "antd";
-import { Exchange } from "../../state/res/Exchange";
-import { Market } from "../../state/res/Market";
-import { FormatQuote, MobTable } from "../Util";
-import { useStore } from "../../state";
-import Scrollbars from "react-custom-scrollbars";
-import { AutoSizeScrollBar } from "../AutoSizeScrollBar";
+import {UpdatableCard} from "../UpdatableCard";
+import {Icon, Tabs} from "antd";
+import {Exchange} from "../../state/res/Exchange";
+import {Market} from "../../state/res/Market";
+import {FormatQuote} from "../Util";
+import {useStore} from "../../state";
+import {AutoSizeScrollBar} from "../AutoSizeScrollBar";
 
 const { TabPane } = Tabs;
 

@@ -1,12 +1,12 @@
-import React, { useCallback, useEffect } from "react";
-import { observer } from "mobx-react-lite";
-import { TimeAgo, UpdateBtn } from "../Util";
-import { Card } from "antd";
+import React, {useCallback, useEffect} from "react";
+import {observer} from "mobx-react-lite";
+import {TimeAgo, UpdateBtn} from "../Util";
+import {Card} from "antd";
 import "./index.scss";
-import { CardProps } from "antd/lib/card";
+import {CardProps} from "antd/lib/card";
 import classNames from "classnames";
 import _ from "lodash";
-import { BaseResModel } from "../../state/res/Base";
+import {BaseResModel} from "../../state/res/Base";
 
 export const UpdatableCard = observer(function UpdatableCard(
   props: Partial<CardProps> & {

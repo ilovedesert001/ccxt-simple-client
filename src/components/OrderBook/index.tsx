@@ -3,11 +3,10 @@ import { observer, useLocalStore } from "mobx-react-lite";
 import "./index.scss";
 import { eSide, OrderBookModel } from "../../model/models";
 import { UpdatableCard } from "../UpdatableCard";
-import Scrollbars from "react-custom-scrollbars";
 import _ from "lodash";
 import { Button } from "antd";
 import { Market } from "../../state/res/Market";
-import { FormatBase, FormatQuote, NumberSeparateFormat } from "../Util";
+import { FormatBase, FormatQuote } from "../Util";
 import { AutoSizeScrollBar } from "../AutoSizeScrollBar";
 import { useMeasure } from "react-use";
 

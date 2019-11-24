@@ -1,4 +1,4 @@
-import { isObservableArray, isObservableMap } from "mobx";
+import {isObservableArray, isObservableMap} from "mobx";
 
 export abstract class SubStore<ParentType = any, RootStoreType = ParentType> {
   store: RootStoreType; //root

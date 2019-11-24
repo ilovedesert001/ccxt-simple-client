@@ -1,15 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
-import { observer, useLocalStore } from "mobx-react-lite";
+import React, {useEffect, useRef} from "react";
+import {observer, useLocalStore} from "mobx-react-lite";
 import "./index.scss";
-import { eSide, OHLCVModel, OrderBookModel } from "../../model/models";
-import { UpdatableCard } from "../UpdatableCard";
-import Scrollbars from "react-custom-scrollbars";
-import _ from "lodash";
-import { Button } from "antd";
-import { Market } from "../../state/res/Market";
-import { FormatBase, FormatQuote, NumberSeparateFormat } from "../Util";
+import {OHLCVModel} from "../../model/models";
+import {UpdatableCard} from "../UpdatableCard";
+import {Market} from "../../state/res/Market";
 import * as LightweightChart from "lightweight-charts";
-import { autorun } from "mobx";
+import {autorun} from "mobx";
 
 const { createChart } = LightweightChart;
 

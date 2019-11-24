@@ -1,6 +1,6 @@
-import { AppSubStore } from "./AppSubStore";
-import { AppRootStore } from "./AppRootStore";
-import { observable } from "mobx";
+import {AppSubStore} from "./AppSubStore";
+import {AppRootStore} from "./AppRootStore";
+import {observable} from "mobx";
 import * as BrowserStore from "store";
 
 export class Config extends AppSubStore<AppRootStore> {

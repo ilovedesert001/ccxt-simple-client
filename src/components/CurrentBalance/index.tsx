@@ -5,13 +5,7 @@ import { BalanceModel } from "../../model/models";
 import { UpdatableCard } from "../UpdatableCard";
 import Scrollbars from "react-custom-scrollbars";
 import { Badge, Progress } from "antd";
-import {
-  FormatBase,
-  FormatPercentage,
-  FormatQuote,
-  FormatValue,
-  Ob
-} from "../Util";
+import { FormatPercentage, FormatQuote, Ob } from "../Util";
 import { Account } from "../../state/res/Account";
 import { Market } from "../../state/res/Market";
 

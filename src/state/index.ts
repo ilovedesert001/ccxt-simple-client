@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { AppRootStore } from "./AppRootStore";
+import React, {useContext} from "react";
+import {AppRootStore} from "./AppRootStore";
 
 import * as mobx from "mobx";
 

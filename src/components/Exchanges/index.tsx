@@ -1,11 +1,11 @@
 import React from "react";
-import { observer } from "mobx-react-lite";
-import { MobTable } from "../Util";
+import {observer} from "mobx-react-lite";
+import {MobTable} from "../Util";
 import "./index.scss";
-import { UpdatableCard } from "../UpdatableCard";
-import { useStore } from "../../state";
-import { Exchange } from "../../state/res/Exchange";
-import { Link } from "react-router-dom";
+import {UpdatableCard} from "../UpdatableCard";
+import {useStore} from "../../state";
+import {Exchange} from "../../state/res/Exchange";
+import {Link} from "react-router-dom";
 
 export const Exchanges = observer(function Exchanges(props: {}) {
   const { exchanges } = useStore();
