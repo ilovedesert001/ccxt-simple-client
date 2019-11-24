@@ -10,7 +10,8 @@ export class Exchanges extends BaseResModel<AppRootStore> {
   constructor(root, parent) {
     super(root, parent);
 
-    const bigone3 = new Exchange(this.store, this, "bigone3");
+    const bigone3 = new Exchange(this.store, this);
+    bigone3.exchange  = 'bigone3';
     this.exchangesMap.set(bigone3.exchange, bigone3);
 
     /*    const zb = new Exchange(this.store, this);
@@ -43,7 +44,8 @@ export class Exchanges extends BaseResModel<AppRootStore> {
 
     ///ccxt.exchanges
     _.each(exchangesNames, name => {
-      const item = new Exchange(this.store, this, name);
+      const item = new Exchange(this.store, this);
+      item.exchange = name;
       item.createCCXTOption = {} as any;
       this.exchangesMap.set(name, item);
     });

@@ -9,9 +9,8 @@ import { CommonSubLs } from "../../Util";
 export class Exchange extends BaseResModel<Exchanges> {
   marketsMap = observable.map<string, Market>({}, { name: "marketsMap" });
 
-  constructor(root, parent, exchange: string) {
+  constructor(root, parent) {
     super(root, parent);
-    this.exchange = exchange;
 
     {
       //set ui market
@@ -106,10 +105,17 @@ export class Exchange extends BaseResModel<Exchanges> {
       });
   }
 
-  lsExchange = new CommonSubLs(
-    this.store.config.ls,
-    `exchange_${this.exchange}`
-  );
+  lsExchangeIns = null;
+
+  get lsExchange() {
+    if (!this.lsExchangeIns) {
+      this.lsExchangeIns = new CommonSubLs(
+        this.store.config.ls,
+        `exchange_${this.exchange}`
+      );
+    }
+    return this.lsExchangeIns;
+  }
 
   lsLatestMarketSet = (market: Market) => {
     this.lsExchange.lsSet("latestMarketSymbol", market.spec.symbol);
