@@ -91,10 +91,45 @@ export class Account extends BaseResModel<Accounts> {
     return currentValue;
   }
 
-  computeProfitAndRate(market: Market) {
+  computeProfitAndRateByMarketPrice(market: Market) {
     const accountOrder = this.safeGetAccountOrder(market);
     const outValue = this.computeOutMoneyByHistory(accountOrder.palOrders);
     const currentValue = this.computeCurrentValue(market);
+    return {
+      profit: currentValue - outValue,
+      rate: (currentValue - outValue) / outValue
+    };
+  }
+
+  computeOrderBookValue(market: Market) {
+    const currentSize = this.balances.map.get(market.spec.base).total;
+
+    const bids = market.orderBook.bids;
+
+    let sellValue = 0; // can be sold
+
+    let calculateSize = 0;
+
+    for (let i = 0; i < bids.length; i++) {
+      const b = bids[i];
+      calculateSize += b.size;
+
+      if (calculateSize < currentSize) {
+        sellValue += b.size * b.price;
+      } else {
+        const leftSize = currentSize - (calculateSize - b.size);
+        sellValue += leftSize * b.price;
+        break;
+      }
+    }
+    return sellValue;
+  }
+
+  computeProfitAndRateByOrderBook(market: Market) {
+    const accountOrder = this.safeGetAccountOrder(market);
+    const currentValue = this.computeOrderBookValue(market);
+    const outValue = this.computeOutMoneyByHistory(accountOrder.palOrders);
+
     return {
       profit: currentValue - outValue,
       rate: (currentValue - outValue) / outValue

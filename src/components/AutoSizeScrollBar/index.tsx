@@ -24,8 +24,6 @@ export const AutoSizeScrollBar = observer(function AutoSizeScrollBar(props: {
         state.height = h;
       }
 
-      console.log("设置WH");
-
       state.parentResizing = false;
     }, 300),
 
@@ -52,8 +50,6 @@ export const AutoSizeScrollBar = observer(function AutoSizeScrollBar(props: {
   }, []);
 
   const width = state.width > minWidth ? state.width : minWidth;
-
-  console.log("wwwwwwwwwwww", width, state.height);
 
   return (
     <Scrollbars

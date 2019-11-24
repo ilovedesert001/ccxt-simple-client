@@ -31,7 +31,8 @@ export const CurrentBalance = observer(function CurrentBalance(props: {
   }
 
   const userOrder = account.safeGetAccountOrder(market);
-  const { profit, rate } = account.computeProfitAndRate(market);
+  const profitByMarketPrice = account.computeProfitAndRateByMarketPrice(market);
+  const profitByOrderBook = account.computeProfitAndRateByOrderBook(market);
 
   return (
     <UpdatableCard
@@ -48,10 +49,24 @@ export const CurrentBalance = observer(function CurrentBalance(props: {
           <BalanceItem balance={balance} />
 
           <div className={"ProfitSection"}>
-            <h3>Profit</h3>
+            <h3>Profit (By Latest price = Market Price)</h3>
             <div>
-              <FormatQuote val={profit} spec={market.spec} withUnit />/{" "}
-              <FormatPercentage val={rate} />
+              <FormatQuote
+                val={profitByMarketPrice.profit}
+                spec={market.spec}
+                withUnit
+              />
+              / <FormatPercentage val={profitByMarketPrice.rate} />
+            </div>
+
+            <h3>Profit (By OrderBook )</h3>
+            <div>
+              <FormatQuote
+                val={profitByOrderBook.profit}
+                spec={market.spec}
+                withUnit
+              />
+              / <FormatPercentage val={profitByOrderBook.rate} />
             </div>
 
             <div className={"profitRow2"}>
@@ -68,6 +83,15 @@ export const CurrentBalance = observer(function CurrentBalance(props: {
                 <Badge color="green" text="Current Value" />
                 <FormatQuote
                   val={account.computeCurrentValue(market)}
+                  spec={market.spec}
+                  withUnit
+                />
+              </div>
+
+              <div>
+                <Badge color="green" text="OrderBook Value" />
+                <FormatQuote
+                  val={account.computeOrderBookValue(market)}
                   spec={market.spec}
                   withUnit
                 />

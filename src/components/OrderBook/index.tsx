@@ -50,7 +50,7 @@ export const OrderBook = observer(function OrderBook(props: {
   }));
 
   useEffect(() => {
-    console.log("AAA", size.height);
+    // console.log("AAA", size.height);
     state.setShowNum(Math.floor(size.height / 40));
   }, [size.height]);
 
