@@ -1,68 +1,70 @@
-import {isObservableArray, isObservableMap} from "mobx";
+import {
+  isObservableArray,
+  isObservableMap,
+  isObservableObject
+} from 'mobx';
 
 export abstract class SubStore<ParentType = any, RootStoreType = ParentType> {
   store: RootStoreType; //root
   parent: ParentType; // parent store
 
-  constructor(root: RootStoreType | null, parent: ParentType, snapShot?: any) {
+  constructor(root: RootStoreType | null, parent: ParentType) {
     this.store = root as RootStoreType;
     if (!root) {
       this.store = (this as unknown) as RootStoreType;
     }
     this.parent = parent;
-    this.applySnapShot(snapShot);
   }
 
-  //store clone
-  static getStoreSnapShoot(obj: SubStore) {
-    delete obj.store;
-    delete obj.parent;
+  private static getObjectSnapShoot(obj: Object) {
     for (const key of Object.keys(obj)) {
       if (obj.hasOwnProperty(key)) {
         let val = obj[key] as unknown;
-
-        if (val instanceof SubStore) {
-          obj[key] = val.getSnapShoot();
-        } else if (Array.isArray(val) || isObservableArray(val)) {
-          val = val.map(item => {
-            if (item instanceof SubStore) {
-              item = item.getSnapShoot();
-            }
-            return item;
-          });
-          obj[key] = val;
-        } else if (val instanceof Map || isObservableMap(val)) {
-          const itemObj = {};
-          val.forEach((item, itemKey) => {
-            itemObj[itemKey] = item;
-            if (item instanceof SubStore) {
-              itemObj[itemKey] = item.getSnapShoot();
-            }
-          });
-          obj[key] = itemObj;
-        } else if (typeof val === "object") {
-          obj[key] = SubStore.getStoreSnapShoot(val as any);
-        }
+        obj[key] = SubStore.getAnySnapShoot(val);
       }
     }
     return obj;
   }
 
-  getSnapShoot(self = this): this {
-    let obj = Object.assign({}, self);
-    // obj = toJS(obj);
-    return SubStore.getStoreSnapShoot(obj) as any;
+  static getAnySnapShoot(obj: any) {
+    if (obj instanceof SubStore) {
+      return obj.getSnapShoot();
+    } else if (obj instanceof Array) {
+      return obj.map((item) => SubStore.getAnySnapShoot(item));
+    } else if (obj instanceof Map) {
+      const itemObj = {};
+      obj.forEach((item, itemKey) => {
+        itemObj[itemKey] = SubStore.getAnySnapShoot(item);
+      });
+      return itemObj;
+    } else if (isObservableArray(obj)) {
+      return SubStore.getAnySnapShoot(Array.from(obj));
+    } else if (isObservableMap(obj)) {
+      const pureMap = new Map(obj);
+      return SubStore.getAnySnapShoot(pureMap);
+    } else if (isObservableObject(obj)) {
+      const itemObj = {};
+      for (const key of Object.keys(obj)) {
+        if (obj.hasOwnProperty(key)) {
+          itemObj[key] = obj[key];
+        }
+      }
+      return SubStore.getObjectSnapShoot(itemObj);
+    } else if (obj instanceof Object) {
+      return SubStore.getObjectSnapShoot(obj);
+    } else {
+      return obj;
+    }
+  }
+
+  getSnapShoot(): this {
+    const o = Object.assign({}, this);
+    delete o.store;
+    delete o.parent;
+    return SubStore.getAnySnapShoot(o);
   }
 
   toJSON() {
-    const obj = Object.assign({}, this);
-    delete obj.store;
-    delete obj.parent;
-
-    return obj;
-  }
-
-  applySnapShot(snapShot: this) {
-    // console.warn('need to be implemented');
+    return this.getSnapShoot();
   }
 }
