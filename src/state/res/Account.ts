@@ -60,10 +60,10 @@ export class Account extends BaseResModel<Accounts> {
     return this.createOrUpdateOrdersByMarket(market);
   }
 
-  //计算花出去的钱
+  //Calculate the money spent
   computeOutMoneyByHistory(orders: OrderModel[]) {
     let toCompute = orders.filter(o => {
-      return o.filled > 0; //才是真正执行过的订单
+      return o.filled > 0; //executed order
     });
 
     const sum = toCompute.reduce((sum, order) => {
@@ -138,7 +138,7 @@ export class Account extends BaseResModel<Accounts> {
   getSnapShoot(): this {
     const obj = super.getSnapShoot();
     delete obj.ccxtIns;
-    delete this.exchange;
+    delete obj.exchange;
     return obj;
   }
 }

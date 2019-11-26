@@ -1,8 +1,4 @@
-import {
-  isObservableArray,
-  isObservableMap,
-  isObservableObject
-} from 'mobx';
+import { isObservableArray, isObservableMap, isObservableObject } from "mobx";
 
 export abstract class SubStore<ParentType = any, RootStoreType = ParentType> {
   store: RootStoreType; //root
@@ -30,7 +26,7 @@ export abstract class SubStore<ParentType = any, RootStoreType = ParentType> {
     if (obj instanceof SubStore) {
       return obj.getSnapShoot();
     } else if (obj instanceof Array) {
-      return obj.map((item) => SubStore.getAnySnapShoot(item));
+      return obj.map(item => SubStore.getAnySnapShoot(item));
     } else if (obj instanceof Map) {
       const itemObj = {};
       obj.forEach((item, itemKey) => {
@@ -51,7 +47,13 @@ export abstract class SubStore<ParentType = any, RootStoreType = ParentType> {
       }
       return SubStore.getObjectSnapShoot(itemObj);
     } else if (obj instanceof Object) {
-      return SubStore.getObjectSnapShoot(obj);
+      const itemObj = {};
+      for (const key of Object.keys(obj)) {
+        if (obj.hasOwnProperty(key)) {
+          itemObj[key] = obj[key];
+        }
+      }
+      return SubStore.getObjectSnapShoot(itemObj);
     } else {
       return obj;
     }
