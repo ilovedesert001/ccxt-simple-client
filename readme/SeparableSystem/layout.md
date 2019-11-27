@@ -19,3 +19,10 @@
 - [ ] 比没有好一点的动画效果
 - [ ] 可以导出布局（JSON）
 - [ ] 导入布局(JSON)
+
+
+## 参考
+
+golden layout (Jquery)
+
+http://golden-layout.com/
