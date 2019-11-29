@@ -3,14 +3,29 @@
   background: gray;
   padding: 50px;
 
+  .SimpleGridLayout{
+    .SimpleGridLayoutContainer{
+      position: relative;
+      height: 999px;
+    }
+  }
 
-  .window{
+  .RndItem{
+    position: relative;
+  }
+
+
+  .Grid{
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
     color: white;
+    box-shadow: rgba(109, 148, 222, 0.6) 0px 1px 8px 0px;
+    position: relative;
+
     >.header{
+      cursor: pointer;
       background: #000000;
       flex: 0 0 24px;
       display: flex;
@@ -26,6 +41,7 @@
     }
 
     >.container{
+      position: relative;
       flex: 1;
       background: #222222;
     }

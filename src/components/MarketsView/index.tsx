@@ -1,13 +1,14 @@
 import React from "react";
-import {observer, useLocalStore} from "mobx-react-lite";
+import { observer, useLocalStore } from "mobx-react-lite";
 import "./index.scss";
-import {UpdatableCard} from "../UpdatableCard";
-import {Icon, Tabs} from "antd";
-import {Exchange} from "../../state/res/Exchange";
-import {Market} from "../../state/res/Market";
-import {FormatQuote} from "../Util";
-import {useStore} from "../../state";
-import {AutoSizeScrollBar} from "../AutoSizeScrollBar";
+import { UpdatableCard } from "../UpdatableCard";
+import { Icon, Tabs } from "antd";
+import { Exchange } from "../../state/res/Exchange";
+import { Market } from "../../state/res/Market";
+import { FormatQuote } from "../Util";
+import { useStore } from "../../state";
+import { AutoSizeScrollBar } from "../AutoSizeScrollBar";
+import classNames from "classnames";
 
 const { TabPane } = Tabs;
 
@@ -94,7 +95,9 @@ const MarketsList = observer(function MarketsTable(props: {
           {markets.map(row => (
             <div
               key={row.spec.symbol}
-              className={"MarketsListItem"}
+              className={classNames("MarketsListItem", {
+                active: row === uiStates.market
+              })}
               onClick={() => {
                 uiStates.changeMarket(row);
               }}

@@ -59,7 +59,7 @@ $main-bg-color: #15232c;
 
 @mixin listHoverAnimation {
   animation: keyFrame_ListItem_inactive 180ms linear;
-  &:hover {
+  &:hover , &.active {
     animation: keyFrame_ListItem_active 100ms linear;
     background-color: #3a444d;
   }
