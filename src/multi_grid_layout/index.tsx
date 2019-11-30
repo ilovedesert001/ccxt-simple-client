@@ -1,22 +1,19 @@
 import { observable, toJS } from "mobx";
 import { observer, useLocalStore } from "mobx-react-lite";
 import React, { ReactChild, ReactElement, useEffect } from "react";
-import "./index.scss";
+
 import RGL, { WidthProvider } from "react-grid-layout";
 import _ from "lodash";
-import { Grid, SimpleGridLayout } from './SimpleGridLayout'
+import { Grid, SimpleGridLayout } from "./SimpleGridLayout";
 
 const ReactGridLayout = WidthProvider(RGL);
 
 export const MultiGridLayout = observer(function() {
-
   return (
     <div className={"MultiGridLayout"}>
       test
-
-      <SimpleGridLayout/>
-
-      <hr/>
+      <SimpleGridLayout layout={[]} />
+      <hr />
       {/*<BasicLayout />*/}
       {/*<BasicLayout />*/}
       {/*<div style={{ width: 600, height: 300 }}>*/}
@@ -28,7 +25,6 @@ export const MultiGridLayout = observer(function() {
     </div>
   );
 });
-
 
 const BasicLayout = observer(function() {
   const state = useLocalStore(() => ({
@@ -58,15 +54,7 @@ const BasicLayout = observer(function() {
     ],
     generateDOM() {
       return _.map(state.layout, function(o) {
-        return (
-          <div key={o.i}>
-            {o.i === "2" ? (
-              <BasicLayout2 />
-            ) : (
-              <span className="text">{o.i}</span>
-            )}
-          </div>
-        );
+        return <div key={o.i}>{o.i === "2" ? <BasicLayout2 /> : <span className="text">{o.i}</span>}</div>;
       });
     }
   }));

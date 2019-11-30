@@ -12,9 +12,7 @@ import classNames from "classnames";
 
 const { TabPane } = Tabs;
 
-export const MarketsView = observer(function MarketsView(props: {
-  exchange: Exchange;
-}) {
+export const MarketsView = observer(function MarketsView(props: { exchange: Exchange }) {
   const { exchange } = props;
 
   const { uiStates } = useStore();
@@ -44,9 +42,7 @@ export const MarketsView = observer(function MarketsView(props: {
       const balancesBases = balances.map(o => o.base);
 
       const markets = allMarkets.filter(
-        o =>
-          balancesBases.includes(o.spec.quote) &&
-          balancesBases.includes(o.spec.base)
+        o => balancesBases.includes(o.spec.quote) && balancesBases.includes(o.spec.base)
       );
 
       return (
@@ -58,18 +54,11 @@ export const MarketsView = observer(function MarketsView(props: {
   };
 
   return (
-    <UpdatableCard
-      title={"Markets"}
-      className={"Markets"}
-      updatableRes={exchange}
-      updateImmediately={false}
-    >
+    <UpdatableCard title={"Markets"} className={"Markets"} updatableRes={exchange} updateImmediately={true}>
       <Tabs defaultActiveKey="1" onChange={() => {}}>
         {renderCurrentAccount()}
         {state.quotes.map(v => {
-          const markets = exchange.allMarkets.filter(
-            o => o.spec.active && o.spec.quote === v
-          );
+          const markets = exchange.allMarkets.filter(o => o.spec.active && o.spec.quote === v);
           return (
             <TabPane tab={v} key={v}>
               <MarketsList markets={markets} />
@@ -81,9 +70,7 @@ export const MarketsView = observer(function MarketsView(props: {
   );
 });
 
-const MarketsList = observer(function MarketsTable(props: {
-  markets: Market[];
-}) {
+const MarketsList = observer(function MarketsTable(props: { markets: Market[] }) {
   const { markets } = props;
 
   const { uiStates } = useStore();
@@ -104,9 +91,7 @@ const MarketsList = observer(function MarketsTable(props: {
             >
               <div className="exchangeName">{row.spec.symbol}</div>
               <div className="latestPrice">
-                {row.lastTicker && (
-                  <FormatQuote val={row.lastTicker.close} spec={row.spec} />
-                )}
+                {row.lastTicker && <FormatQuote val={row.lastTicker.close} spec={row.spec} />}
               </div>
             </div>
           ))}

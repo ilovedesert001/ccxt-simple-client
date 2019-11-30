@@ -1,21 +1,27 @@
-
-.MultiGridLayout{
+.MultiGridLayout {
   background: gray;
   padding: 50px;
 
-  .SimpleGridLayout{
-    .SimpleGridLayoutContainer{
-      position: relative;
-      height: 999px;
+  .react-grid-layout {
+    border: 2px dashed yellow;
+
+    .react-grid-item {
+      background: #70c573;
     }
   }
+}
 
-  .RndItem{
+.SimpleGridLayout {
+  .SimpleGridLayoutContainer {
+    position: relative;
+    height: 999px;
+  }
+
+  .RndItem {
     position: relative;
   }
 
-
-  .Grid{
+  .Grid {
     width: 100%;
     height: 100%;
     display: flex;
@@ -24,39 +30,25 @@
     box-shadow: rgba(109, 148, 222, 0.6) 0px 1px 8px 0px;
     position: relative;
 
-    >.header{
+    > .header {
       cursor: pointer;
       background: #000000;
       flex: 0 0 24px;
       display: flex;
       justify-content: space-between;
-      >.left{
+      > .left {
         flex: 1;
       }
 
-      >.right{
-
+      > .right {
+        padding-right: 12px;
       }
-
     }
 
-    >.container{
+    > .container {
       position: relative;
       flex: 1;
       background: #222222;
     }
   }
-
-
-  .react-grid-layout{
-    border: 2px dashed yellow;
-
-
-    .react-grid-item{
-      background: #70c573;
-    }
-  }
-
-
 }
-

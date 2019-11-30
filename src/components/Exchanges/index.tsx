@@ -1,11 +1,11 @@
 import React from "react";
-import {observer} from "mobx-react-lite";
-import {MobTable} from "../Util";
+import { observer } from "mobx-react-lite";
+import { MobTable } from "../Util";
 import "./index.scss";
-import {UpdatableCard} from "../UpdatableCard";
-import {useStore} from "../../state";
-import {Exchange} from "../../state/res/Exchange";
-import {Link} from "react-router-dom";
+import { UpdatableCard } from "../UpdatableCard";
+import { useStore } from "../../state";
+import { Exchange } from "../../state/res/Exchange";
+import { Link } from "react-router-dom";
 
 export const Exchanges = observer(function Exchanges(props: {}) {
   const { exchanges } = useStore();
@@ -26,6 +26,7 @@ export const Exchanges = observer(function Exchanges(props: {}) {
               render: (v, row) => (
                 <div>
                   <Link to={`/exchange/${row.exchange}`}>{v}</Link>
+                  <Link to={`/exchange2/${row.exchange}`}>{v} - simple grid layout</Link>
                 </div>
               )
             }
