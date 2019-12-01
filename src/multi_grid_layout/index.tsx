@@ -4,7 +4,8 @@ import React, { ReactChild, ReactElement, useEffect } from "react";
 
 import RGL, { WidthProvider } from "react-grid-layout";
 import _ from "lodash";
-import { Grid, SimpleGridLayout } from "./SimpleGridLayout";
+import { Grid, Layout, SimpleGridLayout } from "./SimpleGridLayout";
+import { useStore } from "../state";
 
 const ReactGridLayout = WidthProvider(RGL);
 
@@ -12,7 +13,12 @@ export const MultiGridLayout = observer(function() {
   return (
     <div className={"MultiGridLayout"}>
       test
-      <SimpleGridLayout layout={[]} />
+      <SimpleGridLayout
+        layout={layout}
+        keyToComponents={{
+          ShowInfoBox: <ShowInfoBox />
+        }}
+      />
       <hr />
       {/*<BasicLayout />*/}
       {/*<BasicLayout />*/}
@@ -132,3 +138,87 @@ const BasicLayout2 = observer(function() {
     </ReactGridLayout>
   );
 });
+
+const ShowInfoBox = observer(function ShowInfoBox() {
+  const store = useStore();
+  const info = store.uiStates.info || {};
+
+  return (
+    <div>
+      info:
+      <pre>{JSON.stringify(info, null, 2)}</pre>
+    </div>
+  );
+});
+
+const layout = [
+  {
+    type: "window",
+    key: "w1",
+    compKey: "w1Comp",
+    node: { x: 0, y: 0, w: "200px", h: "180px" }
+  },
+  {
+    type: "window",
+    key: "info",
+    compKey: "ShowInfoBox",
+    node: { x: 710, y: 0, w: "480px", h: "480px" }
+  },
+  {
+    type: "container",
+    key: "container1",
+    node: { x: 0, y: 150, w: "600px", h: "400px" },
+    children: [
+      {
+        type: "window",
+        key: "container1_w1",
+        compKey: "comp",
+        node: { x: 0, y: 0, w: "200px", h: "180px" }
+      },
+      {
+        type: "window",
+        key: "container1_w2",
+        compKey: "comp",
+        node: { x: 210, y: 0, w: "200px", h: "180px" }
+      },
+      {
+        type: "container",
+        key: "container1_container",
+        node: { x: 0, y: 150, w: "400px", h: "200px" },
+        children: [
+          {
+            type: "window",
+            key: "container1_w1",
+            compKey: "comp",
+            node: { x: 0, y: 0, w: "200px", h: "180px" }
+          },
+          {
+            type: "window",
+            key: "container1_w2",
+            compKey: "comp",
+            node: { x: 210, y: 0, w: "200px", h: "180px" }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    type: "container",
+    key: "container2",
+    node: { x: 0, y: 550, w: "600px", h: "400px" },
+    children: [
+      {
+        type: "window",
+        key: "container2_w1",
+        compKey: "comp",
+        node: { x: 0, y: 0, w: "200px", h: "180px" }
+      },
+      {
+        type: "window",
+        key: "container2_w2",
+        compKey: "comp",
+        node: { x: 210, y: 0, w: "200px", h: "180px" }
+      }
+    ]
+  }
+] as Layout;

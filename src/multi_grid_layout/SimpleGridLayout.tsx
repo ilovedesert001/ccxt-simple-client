@@ -4,6 +4,9 @@ import React, { useRef } from "react";
 import { Rnd } from "react-rnd";
 import _ from "lodash";
 import "./index.scss";
+import { useStore } from "../state";
+
+const gridHeaderHeight = 24;
 
 export const SimpleGridLayout = observer(function SimpleGridLayout(props: {
   layout: Layout;
@@ -18,6 +21,8 @@ export const SimpleGridLayout = observer(function SimpleGridLayout(props: {
       comp2: <div>custom component2</div>
     }
   } = props;
+
+  const store = useStore(); //TODO debug
 
   //define manager
   const rndManagerRef = useRef({
@@ -64,7 +69,7 @@ export const SimpleGridLayout = observer(function SimpleGridLayout(props: {
               height: item.node.h
             }}
             resizeGrid={[24, 24]}
-            dragGrid={[24, 24]}
+            // dragGrid={[24, 24]}
             dragHandleClassName={"header"}
             onDragStart={(e, node) => {
               // console.log("AAA", node);
@@ -80,6 +85,12 @@ export const SimpleGridLayout = observer(function SimpleGridLayout(props: {
             onDragStop={(e, position) => {
               item.node.x = position.x;
               item.node.y = position.y;
+              //重新计算每个窗口的世界坐标
+              state.recalculateWordPos(null, layout);
+
+              // state.getDomNodeByPosition()
+
+              store.uiStates.info = item;
               state.triggerLayoutChange();
             }}
             onResizeStop={(e, direction, ref, delta, position) => {
@@ -121,7 +132,48 @@ export const SimpleGridLayout = observer(function SimpleGridLayout(props: {
           //   );
           // }
         });
-      }
+      },
+
+      recalculateWordPos(container: LayoutItem, layout: Layout) {
+        return layout.forEach(item => {
+          if (item.children && item.children.length > 0) {
+            state.itemLocalPosToWordPos(container, item);
+            state.recalculateWordPos(item, item.children);
+          } else {
+            state.itemLocalPosToWordPos(container, item);
+          }
+        });
+      },
+
+      //本地坐标，转换成世界(世界，也就是 root 元素->SimpleGridLayoutContainer)坐标
+      itemLocalPosToWordPos(container: LayoutItem, item: LayoutItem) {
+        const pos = {
+          x: 0,
+          y: 0
+        };
+        if (container) {
+          pos.x = container.node.wordPos.x;
+          pos.y = container.node.wordPos.y;
+
+          if (item) {
+            pos.y += gridHeaderHeight;
+          }
+
+          // pos.x = container.node.wordPos.x;
+          // pos.y = container.node.wordPos.y;
+        }
+
+        if (item.key == "container1_container") {
+          console.log("AAAA", item, container);
+        }
+
+        item.node.wordPos = {
+          x: item.node.x + pos.x,
+          y: item.node.y + pos.y
+        };
+      },
+
+      getDomNodeByPosition(pos: PointPosition) {}
     }),
     props
   );
@@ -153,9 +205,41 @@ export const SimpleGridLayout = observer(function SimpleGridLayout(props: {
       {/*>*/}
       {/*  move window1 into container*/}
       {/*</button>*/}
-      <div className="SimpleGridLayoutContainer">{state.renderLayout(layout)}</div>
+      {/*SimpleGridLayoutContainer 作为坐标系 ，左上角为原点，建立直角坐标系 */}
+      <div className="SimpleGridLayoutContainer">
+        {state.renderLayout(layout)}
+        <div className={"debug"}>
+          <Point />
+        </div>
+      </div>
     </div>
   );
+});
+
+const Point = observer(function Point() {
+  const store = useStore();
+  const info = store.uiStates.info as LayoutItem;
+
+  const pointSize = 20;
+
+  if (info && info.node.wordPos) {
+    return (
+      <div
+        style={{
+          background: "white",
+          position: "absolute",
+          width: pointSize,
+          height: pointSize,
+          borderRadius: "50%",
+          left: info.node.wordPos.x - pointSize / 2,
+          top: info.node.wordPos.y - pointSize / 2,
+          zIndex: 9999
+        }}
+      />
+    );
+  } else {
+    return null;
+  }
 });
 
 export const Grid = observer(function Window(props: { title?: any; children?: any; onCloseBtnClick?: any }) {
@@ -198,58 +282,14 @@ export interface LayoutItem {
     y: number;
     w: string; //px
     h: string;
+
+    wordPos: PointPosition;
   };
 }
 
 export type Layout = LayoutItem[];
 
-const layout = [
-  {
-    type: "window",
-    key: "markets",
-    compKey: "MarketsView",
-    node: { x: 0, y: 0, w: "408px", h: "552px" }
-  },
-  {
-    type: "window",
-    key: "orderBook",
-    compKey: "OrderBook",
-    node: { x: 408, y: 0, w: "408px", h: "552px" }
-  },
-  {
-    type: "window",
-    key: "trades",
-    compKey: "RecentTrades",
-    node: { x: 816, y: 0, w: "384px", h: "552px" }
-  },
-  {
-    type: "container",
-    key: "container1",
-    node: { x: 1, y: 551, w: "1512px", h: "1200px" },
-    children: [
-      {
-        type: "window",
-        key: "accounts",
-        compKey: "AccountsView",
-        node: { x: 415, y: 2, w: "408px", h: "696px" }
-      },
-      {
-        type: "window",
-        key: "balance",
-        compKey: "CurrentBalance",
-        node: { x: 0, y: 0, w: "408px", h: "480px" }
-      },
-      {
-        type: "window",
-        key: "orders",
-        compKey: "AccountOrders",
-        node: {
-          x: 5,
-          y: 668.3361206054688,
-          w: "1464px",
-          h: "192px"
-        }
-      }
-    ]
-  }
-] as Layout;
+export interface PointPosition {
+  x: number;
+  y: number;
+}
