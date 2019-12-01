@@ -1,12 +1,23 @@
 import { observable, toJS } from "mobx";
 import { observer, useForceUpdate, useLocalStore } from "mobx-react-lite";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Rnd } from "react-rnd";
 import _ from "lodash";
 import "./index.scss";
 import { useStore } from "../state";
 
 const gridHeaderHeight = 24;
+
+function parent_by_selector(node, selector, stop_selector = "body") {
+  var parent = node.parentNode;
+  while (true) {
+    if (parent.matches(stop_selector)) break;
+    if (parent.matches(selector)) break;
+    parent = parent.parentNode; // get upper parent and check again
+  }
+  if (parent.matches(stop_selector)) parent = null; // when parent is a tag 'body' -> parent not found
+  return parent;
+}
 
 export const SimpleGridLayout = observer(function SimpleGridLayout(props: {
   layout: Layout;
@@ -40,6 +51,12 @@ export const SimpleGridLayout = observer(function SimpleGridLayout(props: {
 
   const state = useLocalStore(
     props => ({
+      //for document.elementsFromPoint(100,100)
+      rootOffset: {
+        x: 0,
+        y: 0
+      },
+
       triggerLayoutChange() {
         onLayoutChange && onLayoutChange(props.layout);
       },
@@ -88,7 +105,7 @@ export const SimpleGridLayout = observer(function SimpleGridLayout(props: {
               //重新计算每个窗口的世界坐标
               state.recalculateWordPos(null, layout);
 
-              // state.getDomNodeByPosition()
+              state.getDomNodesByItemPosition(item);
 
               store.uiStates.info = item;
               state.triggerLayoutChange();
@@ -112,14 +129,28 @@ export const SimpleGridLayout = observer(function SimpleGridLayout(props: {
           if (item.type === LayoutItemType.window) {
             return state.renderRnd(
               item,
-              <Grid key={item.key} title={item.key}>
+              <Grid
+                key={item.key}
+                layoutItem={item}
+                title={item.key}
+                onCloseBtnClick={() => {
+                  state.removeItem(item);
+                }}
+              >
                 {state.renderComponentByCompKey(item.compKey)}
               </Grid>
             );
           } else if (item.type === LayoutItemType.container) {
             return state.renderRnd(
               item,
-              <Grid key={item.key} title={item.key}>
+              <Grid
+                key={item.key}
+                layoutItem={item}
+                title={item.key}
+                onCloseBtnClick={() => {
+                  state.removeItem(item);
+                }}
+              >
                 {state.renderLayout(item.children)}
               </Grid>
             );
@@ -173,10 +204,120 @@ export const SimpleGridLayout = observer(function SimpleGridLayout(props: {
         };
       },
 
-      getDomNodeByPosition(pos: PointPosition) {}
+      getDomNodesByItemPosition(item: LayoutItem) {
+        let target = null as HTMLDivElement; // drop target element
+
+        const pos = {
+          x: item.node.wordPos.x + state.rootOffset.x - 2,
+          y: item.node.wordPos.y + state.rootOffset.y - 2
+        };
+
+        // console.log(pos);
+        const els = document.elementsFromPoint(pos.x, pos.y);
+        console.log("el", els);
+        const el = els[1];
+        if (el) {
+          console.log("xxx", el.getAttribute("data-dropable"));
+          if (el.getAttribute("data-dropable") === "true") {
+            target = el as HTMLDivElement;
+          } else {
+            target = parent_by_selector(el, "[data-dropable='true']");
+          }
+          console.log("target", target);
+
+          if (target) {
+            state.handleItemDropByTargetDomNode(item, target);
+          }
+        }
+
+        return target;
+      },
+
+      handleItemDropByTargetDomNode(item: LayoutItem, el: HTMLDivElement) {
+        // 1. remove item from it's parent
+        state.eachItem(layout, (o, parent) => {
+          if (o.key === item.key) {
+            _.pull(parent, item);
+            return false;
+          } else {
+            return true;
+          }
+        });
+
+        item.node.x = item.node.wordPos.x;
+        item.node.y = item.node.wordPos.y;
+
+        // 2. find dom element's item(LayoutItem) -> target
+        // 3. put item to target, (if target is not container , then change to container)
+        const targetKey = el.getAttribute("data-layoutitemkey");
+        if (targetKey) {
+          const target = state.findLayoutItemByKey(targetKey, props.layout);
+          console.log("target", targetKey, target, props.layout);
+
+          if (target) {
+            //TODO wrong way
+            if (target.type === LayoutItemType.window) {
+              const originWindow = _.cloneDeep(target); //TODO wrong way
+              target.type = LayoutItemType.container;
+              target.children = [originWindow];
+            }
+            target.children.push(item);
+          }
+        } else {
+          props.layout.push(item);
+        }
+
+        forceUpdate();
+      },
+
+      eachItem(layout: Layout, handler: (item: LayoutItem, parent: Layout) => boolean) {
+        for (const item of layout) {
+          const needContinue = handler(item, layout);
+          if (needContinue) {
+            if (item.type === LayoutItemType.container) {
+              state.eachItem(item.children, handler);
+            }
+          } else {
+            break;
+          }
+        }
+      },
+
+      findLayoutItemByKey(key: string, layout: Layout): LayoutItem {
+        let target = null as LayoutItem;
+        state.eachItem(layout, item => {
+          if (item.key === key) {
+            target = item;
+            return false;
+          } else {
+            return true;
+          }
+        });
+        return target;
+      },
+
+      removeItem(item) {
+        state.eachItem(layout, (o, parent) => {
+          if (o.key === item.key) {
+            _.pull(parent, item);
+            return false;
+          } else {
+            return true;
+          }
+        });
+        forceUpdate();
+      }
     }),
     props
   );
+
+  const containerRoot = useRef(null as HTMLDivElement);
+
+  useEffect(() => {
+    const react = containerRoot.current.getBoundingClientRect();
+    state.rootOffset.x = react.x;
+    state.rootOffset.y = react.y;
+  }, []);
 
   // const layout = toJS(state.layout);
 
@@ -206,7 +347,7 @@ export const SimpleGridLayout = observer(function SimpleGridLayout(props: {
       {/*  move window1 into container*/}
       {/*</button>*/}
       {/*SimpleGridLayoutContainer 作为坐标系 ，左上角为原点，建立直角坐标系 */}
-      <div className="SimpleGridLayoutContainer">
+      <div className="SimpleGridLayoutContainer" ref={containerRoot} data-dropable={true}>
         {state.renderLayout(layout)}
         <div className={"debug"}>
           <Point />
@@ -242,12 +383,17 @@ const Point = observer(function Point() {
   }
 });
 
-export const Grid = observer(function Window(props: { title?: any; children?: any; onCloseBtnClick?: any }) {
-  const { title = "title", children = "nothing", onCloseBtnClick } = props;
+export const Grid = observer(function Window(props: {
+  layoutItem: LayoutItem;
+  title?: any;
+  children?: any;
+  onCloseBtnClick?: any;
+}) {
+  const { layoutItem, title = "title", children = "nothing", onCloseBtnClick } = props;
 
   return (
-    <div className="Grid">
-      <div className="header">
+    <div className="Grid" data-layoutitemkey={layoutItem.key}>
+      <div className="header" data-dropable={true} data-layoutitemkey={layoutItem.key}>
         <div className="left">{title}</div>
         <div
           className="right"
@@ -258,7 +404,9 @@ export const Grid = observer(function Window(props: { title?: any; children?: an
           X
         </div>
       </div>
-      <div className="container">{children}</div>
+      <div className="container" data-dropable={true} data-layoutitemkey={layoutItem.key}>
+        {children}
+      </div>
     </div>
   );
 });

@@ -188,13 +188,13 @@ const layout = [
         children: [
           {
             type: "window",
-            key: "container1_w1",
+            key: "container1_c_w1",
             compKey: "comp",
             node: { x: 0, y: 0, w: "200px", h: "180px" }
           },
           {
             type: "window",
-            key: "container1_w2",
+            key: "container1_c_w2",
             compKey: "comp",
             node: { x: 210, y: 0, w: "200px", h: "180px" }
           }
