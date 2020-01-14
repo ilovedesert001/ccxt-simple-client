@@ -153,72 +153,127 @@ const ShowInfoBox = observer(function ShowInfoBox() {
 
 const layout = [
   {
-    type: "window",
-    key: "w1",
-    compKey: "w1Comp",
-    node: { x: 0, y: 0, w: "200px", h: "180px" }
-  },
-  {
-    type: "window",
-    key: "info",
-    compKey: "ShowInfoBox",
-    node: { x: 710, y: 0, w: "480px", h: "480px" }
-  },
-  {
     type: "container",
-    key: "container1",
-    node: { x: 0, y: 150, w: "600px", h: "400px" },
+    key: "rootContainer",
+    node: { x: 0, y: 0, w: "1400px", h: "900px" },
     children: [
       {
         type: "window",
-        key: "container1_w1",
-        compKey: "comp",
-        node: { x: 0, y: 0, w: "200px", h: "180px" }
+        key: "info",
+        compKey: "ShowInfoBox",
+        lock: true,
+        node: { x: 710, y: 0, w: "480px", h: "480px" }
       },
       {
         type: "window",
-        key: "container1_w2",
-        compKey: "comp",
-        node: { x: 210, y: 0, w: "200px", h: "180px" }
+        key: "w1",
+        compKey: "w1Comp",
+        node: { x: 10, y: 10, w: "200px", h: "100px" }
       },
       {
         type: "container",
-        key: "container1_container",
-        node: { x: 0, y: 150, w: "400px", h: "200px" },
+        key: "container1",
+        node: {
+          x: 8,
+          y: 125.99999237060547,
+          w: "300px",
+          h: "200px"
+        },
         children: [
           {
             type: "window",
-            key: "container1_c_w1",
+            key: "container1_w1",
             compKey: "comp",
-            node: { x: 0, y: 0, w: "200px", h: "180px" }
+            node: {
+              x: 10,
+              y: 10,
+              w: "192px",
+              h: "96px"
+            }
+          }
+        ]
+      },
+
+      {
+        type: "tabs",
+        key: "container3",
+        node: {
+          x: 14.000003814697266,
+          y: 352.99999237060547,
+          w: "632px",
+          h: "364px"
+        },
+        children: [
+          {
+            type: "window",
+            key: "container3_w1",
+            compKey: "comp",
+            node: {
+              x: 34.999996185302734,
+              y: 20,
+              w: "200px",
+              h: "180px"
+            }
           },
           {
             type: "window",
-            key: "container1_c_w2",
+            key: "container3_w2",
             compKey: "comp",
-            node: { x: 210, y: 0, w: "200px", h: "180px" }
+            node: {
+              x: 372.9999809265137,
+              y: 38,
+              w: "200px",
+              h: "180px"
+            }
           }
         ]
       }
     ]
-  },
-  {
-    type: "container",
-    key: "container2",
-    node: { x: 0, y: 550, w: "600px", h: "400px" },
-    children: [
-      {
-        type: "window",
-        key: "container2_w1",
-        compKey: "comp",
-        node: { x: 0, y: 0, w: "200px", h: "180px" }
-      },
-      {
-        type: "window",
-        key: "container2_w2",
-        compKey: "comp",
-        node: { x: 210, y: 0, w: "200px", h: "180px" }
-      }
-    ]
   }
+
+  // {
+  //   type: "window",
+  //   key: "container1_w2",
+  //   compKey: "comp",
+  //   node: { x: 210, y: 0, w: "200px", h: "180px" }
+  // },
+  // {
+  //   type: "container",
+  //   key: "container1_container",
+  //   node: { x: 0, y: 150, w: "400px", h: "200px" },
+  //   children: [
+  //     {
+  //       type: "window",
+  //       key: "container1_c_w1",
+  //       compKey: "comp",
+  //       node: { x: 0, y: 0, w: "200px", h: "180px" }
+  //     },
+  //     {
+  //       type: "window",
+  //       key: "container1_c_w2",
+  //       compKey: "comp",
+  //       node: { x: 210, y: 0, w: "200px", h: "180px" }
+  //     }
+  //   ]
+  // }
+
+  // {
+  //   type: "container",
+  //   key: "container2",
+  //   node: { x: 0, y: 550, w: "600px", h: "400px" },
+  //   children: [
+  //     {
+  //       type: "window",
+  //       key: "container2_w1",
+  //       compKey: "comp",
+  //       node: { x: 0, y: 0, w: "200px", h: "180px" }
+  //     },
+  //     {
+  //       type: "window",
+  //       key: "container2_w2",
+  //       compKey: "comp",
+  //       node: { x: 210, y: 0, w: "200px", h: "180px" }
+  //     }
+  //   ]
+  // }
 ] as Layout;

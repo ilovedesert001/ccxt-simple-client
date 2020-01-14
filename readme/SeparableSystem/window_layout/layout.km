@@ -1,0 +1,709 @@
+{
+    "root": {
+        "data": {
+            "id": "bzl4g4olrsw0",
+            "created": 1577949595218,
+            "text": "window layout",
+            "expandState": "expand"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "bzl4go4455s0",
+                    "created": 1577949637515,
+                    "text": "起源",
+                    "expandState": "expand",
+                    "layout": null
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "bzl4h0rvdyo0",
+                            "created": 1577949665072,
+                            "text": "现有布局方案的痛点",
+                            "expandState": "expand",
+                            "layout": null
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "bzl4gqdsqg00",
+                                    "created": 1577949642454,
+                                    "text": "有很多并不特别相关的功能 ，然后把每个功能做成一个单独 panel 时，不好决定位置。",
+                                    "expandState": "expand",
+                                    "layout": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "bzl4hfm2nm80",
+                                    "created": 1577949697374,
+                                    "text": "例如 react grid layout ， 虽然用户可以自由拖动，但是 并没有办法 像 windows 窗口操作那样自由",
+                                    "expandState": "expand",
+                                    "layout": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "bzl4i8ipeio0",
+                                    "created": 1577949760297,
+                                    "text": "或者 类似 现有的很多响应式布局网站 ，那种高度限制死的自适应布局方案，总会在某一些尺寸上让人很难受",
+                                    "expandState": "expand",
+                                    "layout": null
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "bzl5frxtoq80",
+                            "created": 1577952388587,
+                            "text": "用户需求",
+                            "layout": null,
+                            "expandState": "expand"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "bzl5fubzcyw0",
+                                    "created": 1577952393797,
+                                    "text": "长期使用的尺寸，不会很容易变化 (换电脑？)",
+                                    "layout": null,
+                                    "expandState": "expand"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "bzl5g3rfobc0",
+                                    "created": 1577952414322,
+                                    "text": "用个性化需求",
+                                    "layout": null,
+                                    "expandState": "expand"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "bzl5g7a6h5s0",
+                                    "created": 1577952421986,
+                                    "text": "开发（产品，团队）想不到的问题",
+                                    "layout": null,
+                                    "expandState": "expand"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "bzl4gy8km3c0",
+                            "created": 1577949659552,
+                            "text": "最可靠解决方案也许是把选择权给使用者 ?",
+                            "expandState": "expand",
+                            "layout": null
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "bzl50cgz5yw0",
+                    "created": 1577951179454,
+                    "text": "参考方案",
+                    "layout": null,
+                    "expandState": "expand"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "bzl50gt7t2o0",
+                            "created": 1577951188901,
+                            "text": "golden layout (Jquery)  ->http://golden-layout.com/",
+                            "layout": null,
+                            "expandState": "expand"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "bzl4jbnxpao0",
+                    "created": 1577949845507,
+                    "text": "功能",
+                    "expandState": "expand",
+                    "layout": null
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "bzl4k4fcpxk0",
+                            "created": 1577949908115,
+                            "text": "基础",
+                            "expandState": "expand",
+                            "layout": null
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "bzl4jm4gvfc0",
+                                    "created": 1577949868275,
+                                    "text": "基本单位是 可拖动 窗口 -> window",
+                                    "expandState": "expand",
+                                    "layout": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "bzl4knntxnk0",
+                                    "created": 1577949949987,
+                                    "text": "window 分类为三个类型",
+                                    "layout": null,
+                                    "expandState": "expand"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "bzl4kv92edc0",
+                                            "created": 1577949966508,
+                                            "text": "基础 window",
+                                            "layout": null,
+                                            "expandState": "expand"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "bzl4l2gsyxc0",
+                                            "created": 1577949982213,
+                                            "text": "容器window",
+                                            "expandState": "expand",
+                                            "layout": null
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "bzl4ldwpwbk0",
+                                                    "created": 1577950007120,
+                                                    "text": "基础容器 window ",
+                                                    "layout": null,
+                                                    "expandState": "expand"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "bzl4o1otu400",
+                                                            "created": 1577950215614,
+                                                            "text": "瞄点在里面的窗口，属于它，可根据它移动",
+                                                            "layout": null,
+                                                            "expandState": "expand"
+                                                        },
+                                                        "children": []
+                                                    },
+                                                    {
+                                                        "data": {
+                                                            "id": "bzl4o508q000",
+                                                            "created": 1577950222835,
+                                                            "text": "可作为最外层( root 容器 )",
+                                                            "layout": null,
+                                                            "expandState": "expand"
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "bzl4m33kce80",
+                                                    "created": 1577950061954,
+                                                    "text": "tab 容器 window",
+                                                    "layout": null,
+                                                    "expandState": "expand"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "bzl4oha97xc0",
+                                                            "created": 1577950249562,
+                                                            "text": "标题成为 tab ",
+                                                            "layout": null,
+                                                            "expandState": "expand"
+                                                        },
+                                                        "children": []
+                                                    },
+                                                    {
+                                                        "data": {
+                                                            "id": "bzl4zkec0go0",
+                                                            "created": 1577951118344,
+                                                            "text": "里面每个 root window 大小充满 此 容器",
+                                                            "layout": null,
+                                                            "expandState": "expand"
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "bzl5hmcle940",
+                                    "created": 1577952533148,
+                                    "text": "window 基本属性",
+                                    "layout": null,
+                                    "expandState": "expand"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "bzl5xykr4i00",
+                                            "created": 1577953813589,
+                                            "text": "可导出属性",
+                                            "expandState": "expand",
+                                            "layout": null
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "bzl5hw33v080",
+                                                    "created": 1577952554342,
+                                                    "text": "key/uuid 唯一识别号",
+                                                    "layout": null,
+                                                    "expandState": "expand"
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "bzl5xczbbp40",
+                                                    "created": 1577953766580,
+                                                    "text": "react 组件信息",
+                                                    "layout": null,
+                                                    "expandState": "expand"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "bzl5xf6x32w0",
+                                                            "created": 1577953771394,
+                                                            "text": "header",
+                                                            "layout": null,
+                                                            "expandState": "expand"
+                                                        },
+                                                        "children": []
+                                                    },
+                                                    {
+                                                        "data": {
+                                                            "id": "bzl5xk9tysg0",
+                                                            "created": 1577953782454,
+                                                            "text": "body",
+                                                            "layout": null,
+                                                            "expandState": "expand"
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "bzl5i7z2w5k0",
+                                                    "created": 1577952580220,
+                                                    "text": "transform(大小位置)",
+                                                    "layout": null,
+                                                    "expandState": "expand"
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "bzl5zdts5dc0",
+                                                    "created": 1577953925151,
+                                                    "text": "逻辑描述",
+                                                    "layout": null,
+                                                    "expandState": "expand"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "bzl5zwh0iyo0",
+                                                            "created": 1577953965738,
+                                                            "text": "是否处于锁定",
+                                                            "layout": null,
+                                                            "expandState": "expand"
+                                                        },
+                                                        "children": []
+                                                    },
+                                                    {
+                                                        "data": {
+                                                            "id": "bzl600g0xl40",
+                                                            "created": 1577953974385,
+                                                            "text": "折叠状态",
+                                                            "layout": null,
+                                                            "expandState": "expand"
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "bzl62o8g8mo0",
+                                                    "created": 1577954182898,
+                                                    "text": "children",
+                                                    "layout": null,
+                                                    "expandState": "expand"
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "bzl5y419tk00",
+                                            "created": 1577953825472,
+                                            "text": "中间态属性\n(在拖动过程中,\n或者拖放失败等时，\n会用到的，\n不会被导出的属性)",
+                                            "layout": null,
+                                            "expandState": "expand"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "bzl5yng7rkw0",
+                                                    "created": 1577953867734,
+                                                    "text": "local transform (本地坐标)",
+                                                    "layout": null,
+                                                    "expandState": "expand"
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "bzl61knvcf40",
+                                                    "created": 1577954096759,
+                                                    "text": "word transform(世界坐标 -<相对于 root window 的坐标)",
+                                                    "layout": null,
+                                                    "expandState": "expand"
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "bzl51agovvk0",
+                                    "created": 1577951253447,
+                                    "text": "基本操作(互动)",
+                                    "layout": null,
+                                    "expandState": "expand"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "bzl53v7mphk0",
+                                            "created": 1577951455340,
+                                            "text": "物理操作",
+                                            "expandState": "expand",
+                                            "layout": null
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "bzl51m3291k0",
+                                                    "created": 1577951278745,
+                                                    "text": "resize (改变窗口大小)",
+                                                    "layout": null,
+                                                    "expandState": "expand"
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "bzl51g5atp40",
+                                                    "created": 1577951265819,
+                                                    "text": "move （移动位置）",
+                                                    "layout": null,
+                                                    "expandState": "expand"
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "bzl57jpji480",
+                                                    "created": 1577951743759,
+                                                    "text": "关闭(移除window)",
+                                                    "layout": null,
+                                                    "expandState": "expand"
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "bzl57o5fgy00",
+                                                    "created": 1577951753426,
+                                                    "text": "折叠",
+                                                    "priority": "9",
+                                                    "layout": null,
+                                                    "expandState": "expand"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "bzl57ulj4a80",
+                                                            "created": 1577951767462,
+                                                            "text": "只留下标题 和 展开 icon",
+                                                            "layout": null,
+                                                            "expandState": "expand"
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "bzl54093mg00",
+                                            "created": 1577951466313,
+                                            "text": "逻辑操作",
+                                            "layout": null,
+                                            "expandState": "expand"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "bzl5664xcqo0",
+                                                    "created": 1577951635850,
+                                                    "text": "锁定物理操作",
+                                                    "expandState": "expand",
+                                                    "layout": null
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "bzl55vpw5so0",
+                                                            "created": 1577951613173,
+                                                            "text": "锁定自己",
+                                                            "expandState": "expand",
+                                                            "layout": null
+                                                        },
+                                                        "children": [
+                                                            {
+                                                                "data": {
+                                                                    "id": "bzl542va7nk0",
+                                                                    "created": 1577951472008,
+                                                                    "text": "只锁定自己，不连带子window 或者后代",
+                                                                    "layout": null,
+                                                                    "expandState": "expand"
+                                                                },
+                                                                "children": []
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "data": {
+                                                            "id": "bzl5603tq2w0",
+                                                            "created": 1577951622723,
+                                                            "text": "深度锁定",
+                                                            "layout": null,
+                                                            "expandState": "expand"
+                                                        },
+                                                        "children": [
+                                                            {
+                                                                "data": {
+                                                                    "id": "bzl56e6m06w0",
+                                                                    "created": 1577951653366,
+                                                                    "text": "已自己为 root ，锁定所有里面的 window",
+                                                                    "layout": null,
+                                                                    "expandState": "expand"
+                                                                },
+                                                                "children": []
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "bzl58tf7phk0",
+                                    "created": 1577951843266,
+                                    "text": "添加 window",
+                                    "expandState": "expand",
+                                    "layout": null
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "bzl58xhl86g0",
+                                            "created": 1577951852117,
+                                            "text": "拖动出现 ？",
+                                            "layout": null,
+                                            "expandState": "expand"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "bzl590kz7z40",
+                                            "created": 1577951858852,
+                                            "text": "或者，点击按钮，在 0，0 点创建 ?",
+                                            "layout": null,
+                                            "expandState": "expand"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "bzl59x57stc0",
+                            "created": 1577951929733,
+                            "text": "相互作用",
+                            "expandState": "expand",
+                            "priority": "1",
+                            "layout": null
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "bzl5a1ip3cw0",
+                                    "created": 1577951939255,
+                                    "text": "容器可包含window 或者容器",
+                                    "layout": null,
+                                    "expandState": "expand"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "bzl5ajza9uo0",
+                                            "created": 1577951979440,
+                                            "text": "所以，理论上应该可以无限嵌套",
+                                            "layout": null,
+                                            "expandState": "expand"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "bzl5d3ee0ps0",
+                                    "created": 1577952178441,
+                                    "text": "被锁定的 window ， 自己不能进行物理操作， 也不能被放入别的window ",
+                                    "layout": null,
+                                    "expandState": "expand"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "bzl5b1yxz9k0",
+                            "created": 1577952018602,
+                            "text": "进阶功能",
+                            "layout": null,
+                            "expandState": "expand"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "bzl5bjai8rk0",
+                                    "created": 1577952056306,
+                                    "text": "全屏",
+                                    "expandState": "expand",
+                                    "layout": null
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "bzl5b7zn3cg0",
+                                            "created": 1577952031705,
+                                            "text": "可相对于 root window 全屏",
+                                            "layout": null,
+                                            "expandState": "expand"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "bzl5bnmwp340",
+                                            "created": 1577952065763,
+                                            "text": "真正全屏",
+                                            "layout": null,
+                                            "expandState": "expand"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "bzl5busmtoo0",
+                                    "created": 1577952081347,
+                                    "text": "导入/导出 布局配置 (json)",
+                                    "layout": null,
+                                    "expandState": "expand"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "bzny7pfop1s0",
+                    "created": 1578236688324,
+                    "text": "使用场景"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "bzny7uzkui80",
+                            "created": 1578236700411,
+                            "text": "场景1"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "bzny7xta2hk0",
+                                    "created": 1578236706560,
+                                    "text": "显示窗口"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "bzny82u5du00",
+                                            "created": 1578236717497,
+                                            "text": "拖动A 窗口，放到 容器B 里面"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "right",
+    "theme": "snow",
+    "version": "1.4.43"
+}

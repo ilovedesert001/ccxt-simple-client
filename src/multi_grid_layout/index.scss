@@ -1,3 +1,5 @@
+@import "../styles/var";
+
 .MultiGridLayout {
   background: gray;
   padding: 50px;
@@ -19,6 +21,20 @@
 
   .RndItem {
     position: relative;
+
+    &.lock {
+      > .Grid {
+        > .container {
+          background: #141313;
+        }
+        > .header {
+          > .windowHeaderLeft {
+            cursor: auto;
+            pointer-events: none;
+          }
+        }
+      }
+    }
   }
 
   .Grid {
@@ -31,21 +47,33 @@
     position: relative;
 
     > .header {
-      cursor: pointer;
       background: #000000;
       flex: 0 0 24px;
       display: flex;
       justify-content: space-between;
-      > .left {
+      > .windowHeaderLeft {
         flex: 1;
+        cursor: pointer;
       }
-
-      > .right {
+      > .windowHeaderRight {
         padding-right: 12px;
+        display: flex;
+        align-items: center;
+        user-select: none;
+
+        > .icon {
+          cursor: pointer;
+          margin-left: 4px;
+          color: white;
+          &.off {
+            color: rgb(85, 85, 85);
+          }
+        }
       }
     }
 
     > .container {
+      @include animationAll();
       position: relative;
       flex: 1;
       background: #222222;

@@ -5,6 +5,7 @@ import { Rnd } from "react-rnd";
 import _ from "lodash";
 import "./index.scss";
 import { useStore } from "../state";
+import classNames from "classnames";
 
 const gridHeaderHeight = 24;
 
@@ -74,10 +75,13 @@ export const SimpleGridLayout = observer(function SimpleGridLayout(props: {
       },
 
       renderRnd(item: LayoutItem, child: any) {
+        console.log("iiiitem", item);
         return (
           <Rnd
             key={item.key}
-            className={"RndItem"}
+            className={classNames("RndItem", {
+              lock: item.lock
+            })}
             // bounds="parent"
             default={{
               x: item.node.x,
@@ -85,12 +89,16 @@ export const SimpleGridLayout = observer(function SimpleGridLayout(props: {
               width: item.node.w,
               height: item.node.h
             }}
+            disableDragging={item.lock}
+            // enableResizing={item.lock}
             resizeGrid={[24, 24]}
             // dragGrid={[24, 24]}
-            dragHandleClassName={"header"}
+            dragHandleClassName={"windowHeaderLeft"}
             onDragStart={(e, node) => {
-              // console.log("AAA", node);
               e.stopPropagation();
+
+              //move current item to root el
+
               const manager = rndManagerRef.current;
               if (manager.prevDraggedNode) {
                 manager.prevDraggedNode.style.zIndex = manager.prevDraggedNodeZIndex;
@@ -133,6 +141,10 @@ export const SimpleGridLayout = observer(function SimpleGridLayout(props: {
                 key={item.key}
                 layoutItem={item}
                 title={item.key}
+                onLockBtn={() => {
+                  item.lock = !item.lock;
+                  forceUpdate();
+                }}
                 onCloseBtnClick={() => {
                   state.removeItem(item);
                 }}
@@ -147,6 +159,10 @@ export const SimpleGridLayout = observer(function SimpleGridLayout(props: {
                 key={item.key}
                 layoutItem={item}
                 title={item.key}
+                onLockBtn={() => {
+                  item.lock = !item.lock;
+                  forceUpdate();
+                }}
                 onCloseBtnClick={() => {
                   state.removeItem(item);
                 }}
@@ -155,9 +171,22 @@ export const SimpleGridLayout = observer(function SimpleGridLayout(props: {
               </Grid>
             );
           }
+
           // else if (item.type === LayoutItemType.tabs) {
-          //   return (
-          //     <Grid key={item.key} title={item.key}>
+          //   return state.renderRnd(
+          //     item,
+          //     <Grid
+          //       key={item.key}
+          //       layoutItem={item}
+          //       title={item.key}
+          //       onLockBtn={() => {
+          //         item.lock = !item.lock;
+          //         forceUpdate();
+          //       }}
+          //       onCloseBtnClick={() => {
+          //         state.removeItem(item);
+          //       }}
+          //     >
           //       {state.renderLayout(item.children)}
           //     </Grid>
           //   );
@@ -207,9 +236,14 @@ export const SimpleGridLayout = observer(function SimpleGridLayout(props: {
       getDomNodesByItemPosition(item: LayoutItem) {
         let target = null as HTMLDivElement; // drop target element
 
+        const targetPoint = {
+          x: item.node.wordPos.x,
+          y: item.node.wordPos.y
+        };
+
         const pos = {
-          x: item.node.wordPos.x + state.rootOffset.x - 2,
-          y: item.node.wordPos.y + state.rootOffset.y - 2
+          x: targetPoint.x + state.rootOffset.x - 2,
+          y: targetPoint.y + state.rootOffset.y - 2
         };
 
         // console.log(pos);
@@ -226,14 +260,14 @@ export const SimpleGridLayout = observer(function SimpleGridLayout(props: {
           console.log("target", target);
 
           if (target) {
-            state.handleItemDropByTargetDomNode(item, target);
+            state.handleItemDropByTargetDomNode(item, target, targetPoint);
           }
         }
 
         return target;
       },
 
-      handleItemDropByTargetDomNode(item: LayoutItem, el: HTMLDivElement) {
+      handleItemDropByTargetDomNode(item: LayoutItem, el: HTMLDivElement, targetPoint: PointPosition) {
         // 1. remove item from it's parent
         state.eachItem(layout, (o, parent) => {
           if (o.key === item.key) {
@@ -244,8 +278,9 @@ export const SimpleGridLayout = observer(function SimpleGridLayout(props: {
           }
         });
 
-        item.node.x = item.node.wordPos.x;
-        item.node.y = item.node.wordPos.y;
+        //set pos
+
+        console.log("AAA", JSON.stringify(item.node, null, 2));
 
         // 2. find dom element's item(LayoutItem) -> target
         // 3. put item to target, (if target is not container , then change to container)
@@ -255,6 +290,9 @@ export const SimpleGridLayout = observer(function SimpleGridLayout(props: {
           console.log("target", targetKey, target, props.layout);
 
           if (target) {
+            item.node.x = targetPoint.x - target.node.wordPos.x; // item.node.wordPos.x;
+            item.node.y = targetPoint.y - target.node.wordPos.y - gridHeaderHeight; // item.node.wordPos.y;
+
             //TODO wrong way
             if (target.type === LayoutItemType.window) {
               const originWindow = _.cloneDeep(target); //TODO wrong way
@@ -262,6 +300,12 @@ export const SimpleGridLayout = observer(function SimpleGridLayout(props: {
               target.children = [originWindow];
             }
             target.children.push(item);
+
+            // if(target.lock){
+            //
+            // } else {
+            //
+            // }
           }
         } else {
           props.layout.push(item);
@@ -388,20 +432,35 @@ export const Grid = observer(function Window(props: {
   title?: any;
   children?: any;
   onCloseBtnClick?: any;
+  onLockBtn?: any;
 }) {
-  const { layoutItem, title = "title", children = "nothing", onCloseBtnClick } = props;
+  const { layoutItem, title = "title", children = "nothing", onCloseBtnClick, onLockBtn } = props;
 
   return (
     <div className="Grid" data-layoutitemkey={layoutItem.key}>
       <div className="header" data-dropable={true} data-layoutitemkey={layoutItem.key}>
-        <div className="left">{title}</div>
-        <div
-          className="right"
-          onClick={() => {
-            onCloseBtnClick && onCloseBtnClick();
-          }}
-        >
-          X
+        <div className="windowHeaderLeft">{title}</div>
+
+        <div className="windowHeaderRight">
+          <div
+            className={classNames("icon", {
+              off: layoutItem.lock !== true
+            })}
+            onClick={() => {
+              onLockBtn && onLockBtn();
+            }}
+          >
+            L
+          </div>
+
+          <div
+            className={"icon"}
+            onClick={() => {
+              onCloseBtnClick && onCloseBtnClick();
+            }}
+          >
+            X
+          </div>
         </div>
       </div>
       <div className="container" data-dropable={true} data-layoutitemkey={layoutItem.key}>
@@ -412,9 +471,9 @@ export const Grid = observer(function Window(props: {
 });
 
 export enum LayoutItemType {
-  window = "window", //single window
   container = "container",
-  tabs = "tabs" //tab container
+  tabs = "tabs", //tab container
+  window = "window" //single window
 }
 
 export interface LayoutItem {
@@ -423,8 +482,9 @@ export interface LayoutItem {
   compKey: string;
   children: LayoutItem[];
 
-  //node info , position  , size, relative to parent
+  lock: boolean; // can't move , can't resize , can't place other windows here
 
+  //node info , position  , size, relative to parent
   node: {
     x: number;
     y: number;
