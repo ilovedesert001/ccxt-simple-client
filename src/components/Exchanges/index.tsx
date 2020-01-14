@@ -26,7 +26,6 @@ export const Exchanges = observer(function Exchanges(props: {}) {
               render: (v, row) => (
                 <div>
                   <Link to={`/exchange/${row.exchange}`}>{v}</Link>
-                  <Link to={`/exchange2/${row.exchange}`}>{v} - simple grid layout</Link>
                 </div>
               )
             }

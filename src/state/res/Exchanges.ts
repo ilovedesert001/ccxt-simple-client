@@ -12,6 +12,14 @@ export class Exchanges extends BaseResModel<AppRootStore> {
 
     const bigone3 = new Exchange(this.store, this);
     bigone3.exchange  = 'bigone3';
+    bigone3.createCCXTOption = {
+      urls: {
+        api: {
+          private: "https://www.bigone.com/api/v3/viewer",
+          public: "https://www.bigone.com/api/v3"
+        }
+      }
+    };
     this.exchangesMap.set(bigone3.exchange, bigone3);
 
     /*    const zb = new Exchange(this.store, this);
