@@ -37,8 +37,8 @@ export class Market extends BaseResModel<Exchange> {
 
   //market price
   @computed get lastPrice() {
-    if (this.lastTicker) {
-      return this.lastTicker.close;
+    if (this.lastTrade) {
+      return this.lastTrade.price;
     } else {
       return 0;
     }

@@ -11,7 +11,7 @@ export class Exchanges extends BaseResModel<AppRootStore> {
     super(root, parent);
 
     const bigone3 = new Exchange(this.store, this);
-    bigone3.exchange  = 'bigone3';
+    bigone3.exchange = "bigone3";
     bigone3.createCCXTOption = {
       urls: {
         api: {
@@ -22,30 +22,30 @@ export class Exchanges extends BaseResModel<AppRootStore> {
     };
     this.exchangesMap.set(bigone3.exchange, bigone3);
 
-    /*    const zb = new Exchange(this.store, this);
-    {
-      zb.exchange = "zb";
-      zb.createCCXTOption = {
-        urls: {
-          api: {
-            private: "https://api.zb.plus/data/v1",
-            public: "https://api.zb.plus/data/v1"
-          }
-        }
-      } as any;
-      this.exchangesMap.set("zb", zb);
-    }
-    */
+    // {
+    //   const zb = new Exchange(this.store, this);
+    //   zb.exchange = "zb";
+    //   zb.createCCXTOption = {
+    //     urls: {
+    //       api: {
+    //         private: "https://api.zb.plus/data/v1",
+    //         public: "https://api.zb.plus/data/v1"
+    //       }
+    //     }
+    //   } as any;
+    //   this.exchangesMap.set("zb", zb);
+    // }
 
     const exchangesNames = [
+      "kraken",
       "bittrex", // dwad
-      "basefex",
+
       // "bitmex",
       "coss",
       "bibox",
-      "huobipro",
       "okex3",
       "poloniex",
+      "basefex",
       // 'bitstamp',
       "coinbasepro"
     ];

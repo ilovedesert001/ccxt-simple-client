@@ -20,9 +20,7 @@ export class RecentTrade extends BaseResModel<Market> {
   async updateRes() {
     this.loadingStart();
     const market = this.market;
-    let trades = <TradeModel[]>(
-      await this.ccxtIns.fetchTrades(market.spec.symbol)
-    );
+    let trades = <TradeModel[]>await this.ccxtIns.fetchTrades(market.spec.symbol);
 
     runInAction(() => {
       trades = _.orderBy(trades, "timestamp", ["desc"]);
@@ -34,10 +32,7 @@ export class RecentTrade extends BaseResModel<Market> {
         } else if (o2.price < o1.price) {
           tick = eTickType.minusTick;
         } else if (o2.price === o1.price) {
-          if (
-            o1.tick === eTickType.plusTick ||
-            o1.tick === eTickType.zeroPlusTick
-          ) {
+          if (o1.tick === eTickType.plusTick || o1.tick === eTickType.zeroPlusTick) {
             tick = eTickType.zeroPlusTick;
           } else {
             tick = eTickType.zeroMinusTick;
@@ -47,9 +42,9 @@ export class RecentTrade extends BaseResModel<Market> {
       });
       this.trades = _.orderBy(trades, "timestamp", ["desc"]);
 
-      if (this.market.lastTicker) {
-        this.market.lastTicker.close = this.trades[0].price;
-      }
+      // if (this.market.lastTicker) {
+      //   this.market.lastTicker.close = this.trades[0].price;
+      // }
     });
 
     this.loadingEnd();
